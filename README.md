@@ -1,4 +1,4 @@
-# Server Airbnb clone
+# Server side SMARTWALLET
 
 The server of smartwallet system, involving business rules of the application.
 
