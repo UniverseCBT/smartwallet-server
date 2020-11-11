@@ -1,13 +1,21 @@
+import { v4 } from 'uuid';
+
 export class User {
-  id: string;
+  public readonly id: string;
 
-  name: string;
+  public name: string;
 
-  username: string;
+  public username: string;
 
-  email: string;
+  public email: string;
 
-  password: string;
+  public password: string;
 
-  avatar: string;
+  constructor(props: Omit<User, 'id'>, id?: string) {
+    Object.assign(this, props);
+
+    if (!id) {
+      this.id = v4();
+    }
+  }
 }
