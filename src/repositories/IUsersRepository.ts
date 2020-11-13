@@ -1,5 +1,5 @@
 import { User } from '../entities/User';
 
 export interface IUsersRepository {
-  create(): Promise<User>;
+  save(data: User): Promise<void>;
 }
