@@ -22,4 +22,12 @@ export class FakeUsersRepository implements IUsersRepository {
 
     return user;
   }
+
+  public async findByEmail(email: string): Promise<User | undefined> {
+    const findByEmail = this.usersRepository.find(
+      userEmail => userEmail.email === email,
+    );
+
+    return findByEmail;
+  }
 }
