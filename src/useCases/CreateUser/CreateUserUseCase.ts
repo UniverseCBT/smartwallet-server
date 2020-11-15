@@ -1,4 +1,5 @@
-import { IUsersRepository } from '../../repositories/IUsersRepository';
+import { User } from '../../entities/User';
+import { IUsersRepository } from '../../repositories/users/IUsersRepository';
 import { CreateUserDTO } from './CreateUserDTO';
 
 export class CreateUserUseCase {
@@ -9,12 +10,14 @@ export class CreateUserUseCase {
     username,
     email,
     password,
-  }: CreateUserDTO): Promise<void> {
-    return {
+  }: CreateUserDTO): Promise<User> {
+    const user = await this.usersRepository.create({
       name,
       username,
       email,
       password,
-    };
+    });
+
+    return user;
   }
 }

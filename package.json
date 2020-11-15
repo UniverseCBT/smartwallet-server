@@ -6,7 +6,8 @@
   "scripts": {
     "dev:server": "tsnd --ignore-watch node_modules --respawn --transpile-only --cls --no-notify ./src/server.ts",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "test:dev": "jest --watch"
   },
   "dependencies": {
     "express": "^4.17.1",
