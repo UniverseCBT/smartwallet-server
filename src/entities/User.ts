@@ -11,6 +11,8 @@ export class User {
 
   public password: string;
 
+  public money_total = 0.0;
+
   constructor(props: Omit<User, 'id'>, id?: string) {
     Object.assign(this, props);
 
