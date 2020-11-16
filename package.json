@@ -7,11 +7,14 @@
     "dev:server": "tsnd --ignore-watch node_modules --respawn --transpile-only --cls --no-notify ./src/server.ts",
     "build": "tsc",
     "test": "jest",
-    "test:dev": "jest --watch"
+    "test:dev": "jest --watch",
+    "typeorm": "tsnd ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "pg": "^8.5.1",
+    "typeorm": "^0.2.29",
     "uuid": "^8.3.1"
   },
   "devDependencies": {

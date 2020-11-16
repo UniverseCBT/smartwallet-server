@@ -5,6 +5,8 @@ import routes from './routes';
 
 import { AppError } from './share/AppError';
 
+import './database';
+
 const app = express();
 
 app.use(express.json());
