@@ -1,23 +1,34 @@
-import { v4 } from 'uuid';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('users')
 export class User {
-  public readonly id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  public name: string;
+  @Column()
+  name: string;
 
-  public username: string;
+  @Column()
+  username: string;
 
-  public email: string;
+  @Column()
+  email: string;
 
-  public password: string;
+  @Column()
+  password: string;
 
-  public money_total = 0.0;
+  @Column('decimal', { precision: 10, scale: 2 })
+  wallet: number;
 
-  constructor(props: Omit<User, 'id'>, id?: string) {
-    Object.assign(this, props);
+  @CreateDateColumn()
+  created_at: Date;
 
-    if (!id) {
-      this.id = v4();
-    }
-  }
+  @UpdateDateColumn()
+  updated_at: Date;
 }
