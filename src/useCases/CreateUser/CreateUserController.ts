@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Bcrypt } from '../../providers/Hash/implementations/Bcrypt';
 
 import { UsersRepository } from '../../repositories/users/database/UsersRepository';
 import { CreateUserUseCase } from './CreateUserUseCase';
@@ -8,8 +9,9 @@ class CreateUserController {
     const { name, username, email, password } = request.body;
 
     const userRepository = new UsersRepository();
+    const hashProvider = new Bcrypt();
 
-    const userUseCase = new CreateUserUseCase(userRepository);
+    const userUseCase = new CreateUserUseCase(userRepository, hashProvider);
 
     const user = await userUseCase.execute({
       name,
