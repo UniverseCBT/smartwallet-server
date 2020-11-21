@@ -1,4 +1,5 @@
-import { UsersRepository } from '../../repositories/users/database/UsersRepository';
+import { IHash } from '../../providers/Hash/repositories/IHash';
+import { IUsersRepository } from '../../repositories/users/IUsersRepository';
 import { ICreateSessionDTO } from './ICreateSessionDTO';
 
 interface UserData {
@@ -11,7 +12,11 @@ interface UserData {
 }
 
 export class CreateSessionUseCase {
-  constructor(private users: UsersRepository) {}
+  constructor(
+    private users: IUsersRepository,
+
+    private hash: IHash,
+  ) {}
 
   public async execute({
     username,
