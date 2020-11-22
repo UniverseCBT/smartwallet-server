@@ -17,8 +17,8 @@ describe('CreateSession', () => {
     createSession = new CreateSessionUseCase(fakeUsersRepository, fakeHash);
   });
 
-  it('should not be able create a new session with username and email', async () => {
-    const userTest = await fakeUsersRepository.create({
+  it('should be able create a new session', async () => {
+    await fakeUsersRepository.create({
       name: 'test name',
       username: 'usernametest',
       email: 'email@test.com',
@@ -26,28 +26,60 @@ describe('CreateSession', () => {
     });
 
     const session = await createSession.execute({
-      username: userTest.username,
-      email: userTest.email,
-      password: userTest.password,
+      usernameOrEmail: 'usernametest',
+      password: 'passwordtest',
     });
 
-    expect(session).rejects.toBeInstanceOf(AppError);
+    expect(session).toHaveProperty('token');
+    expect(session).toHaveProperty('user');
   });
 
-  it('should not be able create a new session without a password', async () => {
-    const userTest = await fakeUsersRepository.create({
+  it('should be able create a session with just email and password', async () => {
+    await fakeUsersRepository.create({
       name: 'test name',
       username: 'usernametest',
       email: 'email@test.com',
-      password: '',
+      password: 'passwordtest',
     });
 
     const session = await createSession.execute({
-      username: userTest.username,
-      email: userTest.email,
-      password: userTest.password,
+      usernameOrEmail: 'email@test.com',
+      password: 'passwordtest',
     });
 
-    expect(session).rejects.toBeInstanceOf(AppError);
+    expect(session).toHaveProperty('token');
+    expect(session).toHaveProperty('user');
+  });
+
+  it('should not be able create a new session with username or email invalid or non-existent', async () => {
+    await fakeUsersRepository.create({
+      name: 'test name',
+      username: 'usernametest',
+      email: 'email@test.com',
+      password: 'passwordtest',
+    });
+
+    await expect(
+      createSession.execute({
+        usernameOrEmail: 'nonexist@email.com',
+        password: 'passwordtest',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able create a new session with password invalid or non-existent', async () => {
+    await fakeUsersRepository.create({
+      name: 'test name',
+      username: 'usernametest',
+      email: 'email@test.com',
+      password: 'passwordtest',
+    });
+
+    await expect(
+      createSession.execute({
+        usernameOrEmail: 'email@test.com',
+        password: 'non-exist',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
