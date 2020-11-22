@@ -5,11 +5,11 @@ import { IUsersRepository } from '../../repositories/users/IUsersRepository';
 import { IHash } from '../../providers/Hash/repositories/IHash';
 
 import { AppError } from '../../share/AppError';
-import { auth } from '../../config/auth';
 
 interface Request {
   usernameOrEmail: string;
   password: string;
+  automatically: string;
 }
 
 interface Response {
@@ -27,6 +27,7 @@ export class CreateSessionUseCase {
   public async execute({
     usernameOrEmail,
     password,
+    automatically,
   }: Request): Promise<Response> {
     const user = await this.users.findByUsernameOrEmail(usernameOrEmail);
 
@@ -34,15 +35,15 @@ export class CreateSessionUseCase {
       throw new AppError('Username or email invalid');
     }
 
-    const passwordCompare = await this.hash.compare(user.password, password);
+    const passwordCompare = await this.hash.compare(password, user.password);
 
     if (!passwordCompare) {
       throw new AppError('Credentials invalids');
     }
 
-    const token = sign({}, auth.secret, {
+    const token = sign({}, '2787c78e46bc463d83907e7bf9669bed', {
       subject: user.id,
-      expiresIn: auth.expiresIn,
+      expiresIn: automatically || '1d',
     });
 
     return {

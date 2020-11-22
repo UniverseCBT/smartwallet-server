@@ -8,15 +8,20 @@ import { CreateSessionUseCase } from './CreateSessionUseCase';
 class CreateSessionController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { usernameOrEmail, password } = request.body;
+    const { automatically } = request.params;
 
     const usersRepository = new UsersRepository();
     const bcrypt = new Bcrypt();
 
     const createSession = new CreateSessionUseCase(usersRepository, bcrypt);
 
-    const test = await createSession.execute({ usernameOrEmail, password });
+    const session = await createSession.execute({
+      usernameOrEmail,
+      password,
+      automatically,
+    });
 
-    return response.status(200).json(test);
+    return response.status(200).json(session);
   }
 }
 

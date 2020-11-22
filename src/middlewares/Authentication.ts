@@ -19,7 +19,7 @@ export default function Authentication(
   const bearerToken = request.headers.authorization;
 
   if (!bearerToken) {
-    throw new AppError('This token does not exist');
+    throw new AppError('This token does not exist', 401);
   }
 
   const [, token] = bearerToken?.split(' ');
@@ -33,6 +33,6 @@ export default function Authentication(
 
     return next();
   } catch {
-    throw new AppError('invalid token');
+    throw new AppError('invalid token', 401);
   }
 }
