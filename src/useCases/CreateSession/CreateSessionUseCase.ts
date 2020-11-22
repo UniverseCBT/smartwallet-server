@@ -5,6 +5,7 @@ import { IUsersRepository } from '../../repositories/users/IUsersRepository';
 import { IHash } from '../../providers/Hash/repositories/IHash';
 
 import { AppError } from '../../share/AppError';
+import { auth } from '../../config/auth';
 
 interface Request {
   usernameOrEmail: string;
@@ -33,15 +34,15 @@ export class CreateSessionUseCase {
       throw new AppError('Username or email invalid');
     }
 
-    const passwordCompare = await this.hash.compare(password, user.password);
+    const passwordCompare = await this.hash.compare(user.password, password);
 
     if (!passwordCompare) {
       throw new AppError('Credentials invalids');
     }
 
-    const token = sign({}, '2787c78e46bc463d83907e7bf9669bed', {
+    const token = sign({}, auth.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: auth.expiresIn,
     });
 
     return {
