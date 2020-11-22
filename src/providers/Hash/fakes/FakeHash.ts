@@ -6,7 +6,7 @@ export class FakeHash implements IHash {
   }
 
   public async compare(hasher: string, text: string): Promise<boolean> {
-    const comparehash = hasher === text;
+    const comparehash = text === hasher;
 
     return comparehash;
   }

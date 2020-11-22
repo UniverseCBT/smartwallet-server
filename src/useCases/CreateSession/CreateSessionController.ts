@@ -1,13 +1,23 @@
 import { Request, Response } from 'express';
 
-export class CreateSessionController {
-  public async create(request: Request, response: Response): Promise<Response> {
-    const { username, email, password } = request.body;
+import { UsersRepository } from '../../repositories/users/database/UsersRepository';
+import { Bcrypt } from '../../providers/Hash/implementations/Bcrypt';
 
-    return response.status(200).json({
-      username,
-      email,
-      password,
-    });
+import { CreateSessionUseCase } from './CreateSessionUseCase';
+
+class CreateSessionController {
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { usernameOrEmail, password } = request.body;
+
+    const usersRepository = new UsersRepository();
+    const bcrypt = new Bcrypt();
+
+    const createSession = new CreateSessionUseCase(usersRepository, bcrypt);
+
+    const test = await createSession.execute({ usernameOrEmail, password });
+
+    return response.status(200).json(test);
   }
 }
+
+export default new CreateSessionController();
