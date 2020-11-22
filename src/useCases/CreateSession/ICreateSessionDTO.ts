@@ -1,5 +1,4 @@
 export interface ICreateSessionDTO {
-  username?: string;
-  email?: string;
+  usernameOrEmail: string;
   password: string;
 }

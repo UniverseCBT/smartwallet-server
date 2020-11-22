@@ -1,29 +1,46 @@
-import { UsersRepository } from '../../repositories/users/database/UsersRepository';
-import { ICreateSessionDTO } from './ICreateSessionDTO';
+import { User } from '../../entities/User';
+import { IUsersRepository } from '../../repositories/users/IUsersRepository';
+import { IHash } from '../../providers/Hash/repositories/IHash';
+import { AppError } from '../../share/AppError';
 
-interface UserData {
-  user: {
-    username?: string;
-    email?: string;
-    password: string;
-  };
+interface Request {
+  usernameOrEmail: string;
+  password: string;
+}
+
+interface Response {
+  user: User;
   token: string;
 }
 
 export class CreateSessionUseCase {
-  constructor(private users: UsersRepository) {}
+  constructor(
+    private users: IUsersRepository,
+
+    private hash: IHash,
+  ) {}
 
   public async execute({
-    username,
-    email,
+    usernameOrEmail,
     password,
-  }: ICreateSessionDTO): Promise<UserData> {
+  }: Request): Promise<Response> {
+    const userExist = await this.users.findByUsernameOrEmail(usernameOrEmail);
+
+    if (!userExist) {
+      throw new AppError('Username or email invalid');
+    }
+
+    const passwordCompare = await this.hash.compare(
+      userExist.password,
+      password,
+    );
+
+    if (!passwordCompare) {
+      throw new AppError('Credentials invalids');
+    }
+
     return {
-      user: {
-        username,
-        email,
-        password,
-      },
+      user: userExist,
       token: 'ikldsvjciljdfgcilfcgvj',
     };
   }
