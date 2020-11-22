@@ -9,7 +9,7 @@ export class Bcrypt implements IHash {
     return textHash;
   }
 
-  public async compare(hasher: string, text: string): Promise<boolean> {
+  public async compare(text: string, hasher: string): Promise<boolean> {
     const compareHash = await compare(text, hasher);
 
     return compareHash;
