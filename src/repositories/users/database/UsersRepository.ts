@@ -33,4 +33,21 @@ export class UsersRepository implements IUsersRepository {
 
     return findEmail;
   }
+
+  public async findByUsernameOrEmail(
+    usernameOrEmail: string,
+  ): Promise<User | undefined> {
+    const user = await this.ormRepository.findOne({
+      where: [
+        {
+          username: usernameOrEmail,
+        },
+        {
+          email: usernameOrEmail,
+        },
+      ],
+    });
+
+    return user;
+  }
 }

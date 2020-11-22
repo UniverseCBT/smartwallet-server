@@ -1,6 +1,9 @@
+import { sign } from 'jsonwebtoken';
+
 import { User } from '../../entities/User';
 import { IUsersRepository } from '../../repositories/users/IUsersRepository';
 import { IHash } from '../../providers/Hash/repositories/IHash';
+
 import { AppError } from '../../share/AppError';
 
 interface Request {
@@ -24,24 +27,26 @@ export class CreateSessionUseCase {
     usernameOrEmail,
     password,
   }: Request): Promise<Response> {
-    const userExist = await this.users.findByUsernameOrEmail(usernameOrEmail);
+    const user = await this.users.findByUsernameOrEmail(usernameOrEmail);
 
-    if (!userExist) {
+    if (!user) {
       throw new AppError('Username or email invalid');
     }
 
-    const passwordCompare = await this.hash.compare(
-      userExist.password,
-      password,
-    );
+    const passwordCompare = await this.hash.compare(password, user.password);
 
     if (!passwordCompare) {
       throw new AppError('Credentials invalids');
     }
 
+    const token = sign({}, '2787c78e46bc463d83907e7bf9669bed', {
+      subject: user.id,
+      expiresIn: '1d',
+    });
+
     return {
-      user: userExist,
-      token: 'ikldsvjciljdfgcilfcgvj',
+      user,
+      token,
     };
   }
 }

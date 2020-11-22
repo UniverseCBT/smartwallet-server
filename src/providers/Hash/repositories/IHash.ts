@@ -1,4 +1,4 @@
 export interface IHash {
   hash(hasher: string): Promise<string>;
-  compare(hasher: string, text: string): Promise<boolean>;
+  compare(text: string, hasher: string): Promise<boolean>;
 }
