@@ -28,6 +28,7 @@ describe('CreateSession', () => {
     const session = await createSession.execute({
       usernameOrEmail: 'usernametest',
       password: 'passwordtest',
+      automatically: '1d',
     });
 
     expect(session).toHaveProperty('token');
@@ -45,6 +46,7 @@ describe('CreateSession', () => {
     const session = await createSession.execute({
       usernameOrEmail: 'email@test.com',
       password: 'passwordtest',
+      automatically: '1d',
     });
 
     expect(session).toHaveProperty('token');
@@ -63,6 +65,7 @@ describe('CreateSession', () => {
       createSession.execute({
         usernameOrEmail: 'nonexist@email.com',
         password: 'passwordtest',
+        automatically: '1d',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -79,6 +82,7 @@ describe('CreateSession', () => {
       createSession.execute({
         usernameOrEmail: 'email@test.com',
         password: 'non-exist',
+        automatically: '1d',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
