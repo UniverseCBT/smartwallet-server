@@ -3,5 +3,4 @@ import { ICreatePaycheckDTO } from '../../useCases/CreatePaycheck/ICreatePaychec
 
 export interface IPaycheckRepository {
   create(data: ICreatePaycheckDTO): Promise<Paycheck>;
-  findByUser(user: string): Promise<Paycheck | undefined>;
 }
