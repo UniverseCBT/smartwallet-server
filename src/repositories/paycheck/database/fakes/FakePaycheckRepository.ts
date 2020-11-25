@@ -5,7 +5,7 @@ import { ICreatePaycheckDTO } from '../../../../useCases/CreatePaycheck/ICreateP
 import { IPaycheckRepository } from '../../IPaycheckRepository';
 
 export class FakePaycheckRepository implements IPaycheckRepository {
-  private paychecks: Paycheck[] = [];
+  private paycheckRepository: Paycheck[] = [];
 
   public async create({
     name,
@@ -21,13 +21,13 @@ export class FakePaycheckRepository implements IPaycheckRepository {
       user_id,
     });
 
-    this.paychecks.push(paycheck);
+    this.paycheckRepository.push(paycheck);
 
     return paycheck;
   }
 
   public async findByUser(user: string): Promise<Paycheck | undefined> {
-    const paycheck = this.paychecks.find(
+    const paycheck = this.paycheckRepository.find(
       findPaycheck => findPaycheck.user_id === user,
     );
 
