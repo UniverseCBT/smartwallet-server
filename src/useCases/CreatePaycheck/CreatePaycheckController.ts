@@ -3,6 +3,9 @@ import { Request, Response } from 'express';
 import { PaycheckRepository } from '../../repositories/paycheck/database/PaycheckRepository';
 import { CreatePaycheckUseCase } from './CreatePaycheckUseCase';
 
+import { UpdateUserWallet } from '../UpdateUserWallet/UpdateUserWallet';
+import { UsersRepository } from '../../repositories/users/database/UsersRepository';
+
 class CreatePaycheckController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, wallet } = request.body;
@@ -17,7 +20,15 @@ class CreatePaycheckController {
       user_id: id,
     });
 
-    return response.status(200).json(paycheck);
+    const usersRepository = new UsersRepository();
+    const updateUserWallet = new UpdateUserWallet(usersRepository);
+
+    const updateWallet = await updateUserWallet.execute({
+      user_id: id,
+      wallet,
+    });
+
+    return response.status(200).json({ paycheck, updateWallet });
   }
 }
 

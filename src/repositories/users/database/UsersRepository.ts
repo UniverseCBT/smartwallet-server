@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+
 import { User } from '../../../entities/User';
 import { CreateUserDTO } from '../../../useCases/CreateUser/CreateUserDTO';
 import { IUsersRepository } from '../IUsersRepository';
@@ -49,5 +50,21 @@ export class UsersRepository implements IUsersRepository {
     });
 
     return user;
+  }
+
+  public async findByUserId(user_id: string): Promise<User | undefined> {
+    const findUser = await this.ormRepository.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+
+    return findUser;
+  }
+
+  public async updateWallet(user: User): Promise<User> {
+    const updateUser = await this.ormRepository.save(user);
+
+    return updateUser;
   }
 }
