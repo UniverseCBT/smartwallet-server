@@ -5,4 +5,6 @@ export interface IUsersRepository {
   create(data: CreateUserDTO): Promise<User>;
   findByEmail(email: string): Promise<User | undefined>;
   findByUsernameOrEmail(usernameOrEmail: string): Promise<User | undefined>;
+  findByUserId(user_id: string): Promise<User | undefined>;
+  updateWallet(user: User): Promise<User>;
 }
