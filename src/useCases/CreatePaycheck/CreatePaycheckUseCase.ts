@@ -13,9 +13,9 @@ export class CreatePaycheckUseCase {
   constructor(private paycheckRepository: IPaycheckRepository) {}
 
   public async execute({ name, wallet, user_id }: Request): Promise<Paycheck> {
-    const nameExist = await this.paycheckRepository.findByName(name);
+    const nameExist = await this.paycheckRepository.findByName(name, user_id);
 
-    if (nameExist) {
+    if (nameExist && nameExist.user_id === user_id) {
       throw new AppError('Paycheck name already exist');
     }
 
