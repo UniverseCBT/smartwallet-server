@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { PaycheckRepository } from '../../repositories/paycheck/database/PaycheckRepository';
 import { CreatePaycheckUseCase } from './CreatePaycheckUseCase';
 
-import { UpdateUserWallet } from '../UpdateUserWallet/UpdateUserWallet';
+import { UpdateUserWalletUseCase } from '../UpdateUserWallet/UpdateUserWalletUseCase';
 import { UsersRepository } from '../../repositories/users/database/UsersRepository';
 
 class CreatePaycheckController {
@@ -21,7 +21,7 @@ class CreatePaycheckController {
     });
 
     const usersRepository = new UsersRepository();
-    const updateUserWallet = new UpdateUserWallet(usersRepository);
+    const updateUserWallet = new UpdateUserWalletUseCase(usersRepository);
 
     await updateUserWallet.execute({
       user_id: id,
