@@ -8,7 +8,7 @@ interface Request {
   wallet: number;
 }
 
-export class UpdateUserWallet {
+export class UpdateUserWalletUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   public async execute({ user_id, wallet }: Request): Promise<User> {
