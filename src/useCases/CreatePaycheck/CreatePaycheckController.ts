@@ -23,12 +23,12 @@ class CreatePaycheckController {
     const usersRepository = new UsersRepository();
     const updateUserWallet = new UpdateUserWallet(usersRepository);
 
-    const updateWallet = await updateUserWallet.execute({
+    await updateUserWallet.execute({
       user_id: id,
       wallet,
     });
 
-    return response.status(200).json({ paycheck, updateWallet });
+    return response.status(200).json(paycheck);
   }
 }
 
