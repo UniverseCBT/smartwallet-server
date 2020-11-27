@@ -26,9 +26,13 @@ export class FakePaycheckRepository implements IPaycheckRepository {
     return paycheck;
   }
 
-  public async findByName(name: string): Promise<Paycheck | undefined> {
+  public async findByName(
+    name: string,
+    user_id: string,
+  ): Promise<Paycheck | undefined> {
     const paycheck = await this.paycheckRepository.find(
-      paycheckName => paycheckName.name === name,
+      paycheckName =>
+        paycheckName.name === name && paycheckName.user_id === user_id,
     );
 
     return paycheck;

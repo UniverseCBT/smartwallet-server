@@ -56,4 +56,14 @@ export class FakeUsersRepository implements IUsersRepository {
 
     return findUser;
   }
+
+  public async updateWallet(user: User): Promise<User> {
+    const findUser = await this.usersRepository.findIndex(
+      userIndex => userIndex.id === user.id,
+    );
+
+    this.usersRepository[findUser] = user;
+
+    return user;
+  }
 }

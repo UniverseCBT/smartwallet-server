@@ -19,10 +19,14 @@ export class PaycheckRepository implements IPaycheckRepository {
     return paycheck;
   }
 
-  public async findByName(name: string): Promise<Paycheck | undefined> {
+  public async findByName(
+    name: string,
+    user_id: string,
+  ): Promise<Paycheck | undefined> {
     const paycheck = await this.ormRepository.findOne({
       where: {
         name,
+        user_id,
       },
     });
 
