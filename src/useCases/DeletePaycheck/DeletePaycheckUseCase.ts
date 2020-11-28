@@ -16,6 +16,14 @@ export class DeletePaycheckUseCase {
   ) {}
 
   public async execute({ paycheck_id, user_id }: Request): Promise<void> {
+    const paycheckExist = await this.paycheckRepository.findByPaycheckId(
+      paycheck_id,
+    );
+
+    if (!paycheckExist) {
+      throw new AppError('Paycheck not found', 404);
+    }
+
     const userPaycheckWallet = await this.paycheckRepository.findWallet(
       paycheck_id,
       user_id,

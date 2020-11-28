@@ -5,10 +5,11 @@ import { ICreatePaycheckDTO } from '../../useCases/CreatePaycheck/ICreatePaychec
 
 export interface IPaycheckRepository {
   create(data: ICreatePaycheckDTO): Promise<Paycheck>;
+  delete(paycheck_id: string): Promise<DeleteResult>;
   findByName(name: string, user_id: string): Promise<Paycheck | undefined>;
   findWallet(
     paycheck_id: string,
     user_id: string,
   ): Promise<Paycheck | undefined>;
-  delete(paycheck_id: string): Promise<DeleteResult>;
+  findByPaycheckId(paycheck_id: string): Promise<Paycheck | undefined>;
 }
