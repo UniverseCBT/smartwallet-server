@@ -37,4 +37,12 @@ export class FakePaycheckRepository implements IPaycheckRepository {
 
     return paycheck;
   }
+
+  public async delete(paycheck_id: string): Promise<void> {
+    const paycheck = await this.paycheckRepository.findIndex(
+      paycheckItem => paycheckItem.id === paycheck_id,
+    );
+
+    await this.paycheckRepository.splice(paycheck, 1);
+  }
 }

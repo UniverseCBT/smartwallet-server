@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { DeleteResult, getRepository } from 'typeorm';
 
 import { IPaycheckRepository } from '../IPaycheckRepository';
 import { Paycheck } from '../../../entities/Paycheck';
@@ -29,6 +29,26 @@ export class PaycheckRepository implements IPaycheckRepository {
         user_id,
       },
     });
+
+    return paycheck;
+  }
+
+  public async findWallet(
+    paycheck_id: string,
+    user_id: string,
+  ): Promise<Paycheck | undefined> {
+    const paycheck = await this.ormRepository.findOne({
+      where: {
+        id: paycheck_id,
+        user_id,
+      },
+    });
+
+    return paycheck;
+  }
+
+  public async delete(paycheck_id: string): Promise<DeleteResult> {
+    const paycheck = await this.ormRepository.delete(paycheck_id);
 
     return paycheck;
   }
