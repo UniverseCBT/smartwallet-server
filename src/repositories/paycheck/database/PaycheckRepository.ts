@@ -19,6 +19,12 @@ export class PaycheckRepository implements IPaycheckRepository {
     return paycheck;
   }
 
+  public async delete(paycheck_id: string): Promise<DeleteResult> {
+    const paycheck = await this.ormRepository.delete(paycheck_id);
+
+    return paycheck;
+  }
+
   public async findByName(
     name: string,
     user_id: string,
@@ -47,8 +53,14 @@ export class PaycheckRepository implements IPaycheckRepository {
     return paycheck;
   }
 
-  public async delete(paycheck_id: string): Promise<DeleteResult> {
-    const paycheck = await this.ormRepository.delete(paycheck_id);
+  public async findByPaycheckId(
+    paycheck_id: string,
+  ): Promise<Paycheck | undefined> {
+    const paycheck = await this.ormRepository.findOne({
+      where: {
+        id: paycheck_id,
+      },
+    });
 
     return paycheck;
   }
