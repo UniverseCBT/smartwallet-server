@@ -25,6 +25,12 @@ export class PaycheckRepository implements IPaycheckRepository {
     return paycheck;
   }
 
+  public async update(paycheck: Paycheck): Promise<Paycheck> {
+    const updatePaycheck = await this.ormRepository.save(paycheck);
+
+    return updatePaycheck;
+  }
+
   public async findByName(
     name: string,
     user_id: string,
