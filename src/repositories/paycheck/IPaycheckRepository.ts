@@ -6,6 +6,7 @@ import { ICreatePaycheckDTO } from '../../useCases/CreatePaycheck/ICreatePaychec
 export interface IPaycheckRepository {
   create(data: ICreatePaycheckDTO): Promise<Paycheck>;
   delete(paycheck_id: string): Promise<DeleteResult>;
+  update(paycheck: Paycheck): Promise<Paycheck>;
   findByName(name: string, user_id: string): Promise<Paycheck | undefined>;
   findWallet(
     paycheck_id: string,
