@@ -35,10 +35,6 @@ export class CreateUserCategory1606701233175 implements MigrationInterface {
             type: 'uuid',
           },
           {
-            name: 'category_id',
-            type: 'uuid',
-          },
-          {
             name: 'paycheck_id',
             type: 'uuid',
           },
@@ -71,18 +67,6 @@ export class CreateUserCategory1606701233175 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'user_categories',
       new TableForeignKey({
-        name: 'CategoriesUser',
-        columnNames: ['category_id'],
-        referencedTableName: 'categories',
-        referencedColumnNames: ['id'],
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      }),
-    );
-
-    await queryRunner.createForeignKey(
-      'user_categories',
-      new TableForeignKey({
         name: 'PaycheckCategories',
         columnNames: ['paycheck_id'],
         referencedTableName: 'paychecks',
@@ -95,8 +79,6 @@ export class CreateUserCategory1606701233175 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey('user_categories', 'PaycheckCategories');
-
-    await queryRunner.dropForeignKey('user_categories', 'CategoriesUser');
 
     await queryRunner.dropForeignKey('user_categories', 'UsersCategories');
 
