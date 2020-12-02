@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 
 import { User } from './User';
-import { Category } from './Category';
 import { Paycheck } from './Paycheck';
 
 @Entity('user_categories')
@@ -27,11 +26,6 @@ export class UserCategories {
     eager: true,
   })
   user_id: string;
-
-  @ManyToMany(() => Category, category => category, {
-    eager: true,
-  })
-  category_id: string;
 
   @ManyToMany(() => Paycheck, paycheck => paycheck, {
     eager: true,
