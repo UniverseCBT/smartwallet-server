@@ -8,6 +8,7 @@ import { UsersRepository } from '../../../repositories/users/database/UsersRepos
 class CreateCategoryController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { category, description, importance } = request.body;
+    const { id } = request.user;
 
     const categoryRepository = new CategoryRepository();
     const usersRepository = new UsersRepository();
@@ -21,6 +22,7 @@ class CreateCategoryController {
       category,
       description,
       importance,
+      user_id: id,
     });
 
     return response.status(200).json(categoryResult);
