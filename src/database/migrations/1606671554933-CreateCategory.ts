@@ -24,10 +24,6 @@ export default class CreateCategory1606671554933 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'importance',
-            type: 'int',
-          },
-          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
@@ -40,6 +36,26 @@ export default class CreateCategory1606671554933 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('categories')
+      .values([
+        {
+          category: 'Bills',
+          description: 'Everything you have to pay',
+        },
+        {
+          category: 'Fum money',
+          description: `You don't really need it but it makes your life better`,
+        },
+        {
+          category: 'Investment',
+          description: `From saving accounts to things you expect financial return`,
+        },
+      ])
+      .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

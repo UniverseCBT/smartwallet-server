@@ -17,9 +17,6 @@ export class Category {
   @Column()
   description: string;
 
-  @Column('int')
-  importance: number;
-
   @CreateDateColumn()
   created_at: Date;
 
