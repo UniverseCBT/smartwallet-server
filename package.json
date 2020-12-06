@@ -8,10 +8,7 @@
     "build": "tsc",
     "test": "jest",
     "test:dev": "jest --watch",
-    "typeorm": "tsnd ./node_modules/typeorm/cli.js",
-    "database:run": "typeorm migration:run",
-    "database:revert": "typeorm migration:revert",
-    "database:create": "typeorm migration:create -n"
+    "typeorm": "tsnd ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
