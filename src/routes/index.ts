@@ -7,6 +7,7 @@ import Authentication from '../middlewares/Authentication';
 
 import paycheckRouter from './paycheck.routes';
 import categoryRouter from './category.routes';
+import habitRouter from './habit.routes';
 
 const routes = Router();
 
@@ -18,5 +19,6 @@ routes.use(Authentication);
 routes.use('/paychecks', paycheckRouter);
 
 routes.use('/categories', categoryRouter);
+routes.use('/habits', habitRouter);
 
 export default routes;
