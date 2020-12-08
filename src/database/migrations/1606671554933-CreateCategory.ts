@@ -47,7 +47,7 @@ export default class CreateCategory1606671554933 implements MigrationInterface {
           description: 'Everything you have to pay',
         },
         {
-          category: 'Fum money',
+          category: 'Fun money',
           description: `You don't really need it but it makes your life better`,
         },
         {

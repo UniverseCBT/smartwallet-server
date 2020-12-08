@@ -21,7 +21,7 @@ export class CreateHabits1607303260363 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'habits_name',
+            name: 'habit_name',
             type: 'varchar',
           },
           {
