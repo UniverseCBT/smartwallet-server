@@ -5,11 +5,13 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Entity,
 } from 'typeorm';
 
 import { Category } from './Category';
 import { User } from './User';
 
+@Entity('habits')
 export class Habit {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -23,7 +25,7 @@ export class Habit {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @Column('uuid')
+  @Column()
   category_id: string;
 
   @ManyToOne(() => Category, category => category, {
@@ -32,8 +34,7 @@ export class Habit {
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
-  @ManyToOne(() => User, user => user)
-  @Column('uuid')
+  @Column()
   user_id: string;
 
   @ManyToOne(() => User, user => user, {
