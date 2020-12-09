@@ -49,4 +49,22 @@ describe('CreateUser', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able create a new user with the same username', async () => {
+    await fakeUsersRepository.create({
+      name: 'user1',
+      username: 'userone',
+      email: 'userone@user.com',
+      password: 'userone',
+    });
+
+    await expect(
+      createUsersUseCase.execute({
+        name: 'user2',
+        username: 'userone',
+        email: 'user@user.com',
+        password: 'usertwo',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
