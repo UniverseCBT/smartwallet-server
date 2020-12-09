@@ -37,6 +37,14 @@ export class FakeUsersRepository implements IUsersRepository {
     return findByEmail;
   }
 
+  public async findByUsername(username: string): Promise<User | undefined> {
+    const findByUsername = this.usersRepository.find(
+      userUsername => userUsername.username === username,
+    );
+
+    return findByUsername;
+  }
+
   public async findByUsernameOrEmail(
     usernameOrEmail: string,
   ): Promise<User | undefined> {
