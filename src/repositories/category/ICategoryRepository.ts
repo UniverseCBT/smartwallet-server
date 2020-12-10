@@ -3,4 +3,5 @@ import { ICreateCategoriesDTO } from '../../useCases/_admin/CreateCategory/ICrea
 
 export interface ICategoryRepository {
   create(data: ICreateCategoriesDTO): Promise<Category>;
+  findAll(): Promise<Category[]>;
 }
