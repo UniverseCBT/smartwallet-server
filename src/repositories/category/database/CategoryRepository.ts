@@ -14,4 +14,10 @@ export class CategoryRepository implements ICategoryRepository {
 
     return category;
   }
+
+  public async findAll(): Promise<Category[]> {
+    const category = await this.ormRepository.find();
+
+    return category;
+  }
 }
