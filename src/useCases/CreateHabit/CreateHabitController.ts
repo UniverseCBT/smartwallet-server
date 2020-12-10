@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { HabitsRepository } from '../../repositories/Habits/database/HabitsRepository';
+
+import { HabitsRepository } from '../../repositories/habits/database/HabitsRepository';
 import { CreateHabitUseCase } from './CreateHabitUseCase';
 
 class CreateHabitController {

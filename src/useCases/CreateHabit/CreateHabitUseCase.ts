@@ -1,6 +1,6 @@
 import { Habit } from '../../entities/Habit';
 
-import { IHabitsRepository } from '../../repositories/Habits/IHabitsRepository';
+import { IHabitsRepository } from '../../repositories/habits/IHabitsRepository';
 // import { AppError } from '../../share/AppError';
 
 interface Request {
