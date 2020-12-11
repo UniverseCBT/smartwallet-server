@@ -14,4 +14,18 @@ export class HabitsRepository implements IHabitsRepository {
 
     return habit;
   }
+
+  public async findByCategory(
+    user_id: string,
+    category_id: string,
+  ): Promise<Habit[] | undefined> {
+    const habit = await this.ormRepository.find({
+      where: {
+        user_id,
+        category_id,
+      },
+    });
+
+    return habit;
+  }
 }

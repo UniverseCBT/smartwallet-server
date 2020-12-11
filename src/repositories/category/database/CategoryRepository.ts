@@ -20,4 +20,14 @@ export class CategoryRepository implements ICategoryRepository {
 
     return category;
   }
+
+  public async findById(category_id: string): Promise<Category | undefined> {
+    const category = await this.ormRepository.findOne({
+      where: {
+        id: category_id,
+      },
+    });
+
+    return category;
+  }
 }
