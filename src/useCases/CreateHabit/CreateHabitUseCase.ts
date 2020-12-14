@@ -2,8 +2,8 @@ import { Habit } from '../../entities/Habit';
 
 import { IHabitsRepository } from '../../repositories/habits/IHabitsRepository';
 import { IUsersRepository } from '../../repositories/users/IUsersRepository';
+
 import { AppError } from '../../share/AppError';
-// import { AppError } from '../../share/AppError';
 
 interface Request {
   habit_name: string;
@@ -49,7 +49,11 @@ export class CreateHabitUseCase {
       return acumulator + Number(value.price);
     }, 0);
 
-    console.log(totalHabits);
+    if (totalHabits + Number(price) > userWallet) {
+      throw new AppError(
+        'You overtake month budget, add a new paycheck to continue creating a new habits',
+      );
+    }
 
     const isBills = findCategory.find(bills => {
       return bills.category.category === 'Bills';
@@ -63,10 +67,8 @@ export class CreateHabitUseCase {
       const percentBillsResult = Math.ceil((getBillsTotal * 100) / userWallet);
       const percentActualResult = Math.ceil((price * 100) / userWallet);
 
-      if (percentBillsResult + percentActualResult > 80) {
-        throw new AppError(
-          'Bills cannot overtake 80 percent of the total budget',
-        );
+      if (percentBillsResult + percentActualResult > 98) {
+        throw new AppError('Bills cannot overtake 98% of the total budget');
       }
     }
 
