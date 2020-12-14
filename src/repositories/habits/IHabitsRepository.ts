@@ -8,4 +8,5 @@ export interface IHabitsRepository {
     user_id: string,
     category_id: string,
   ): Promise<Habit[] | undefined>;
+  findByUser(user_id: string): Promise<Habit[] | undefined>;
 }
