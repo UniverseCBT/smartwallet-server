@@ -28,4 +28,14 @@ export class HabitsRepository implements IHabitsRepository {
 
     return habit;
   }
+
+  public async findByUser(user_id: string): Promise<Habit[] | undefined> {
+    const habit = await this.ormRepository.find({
+      where: {
+        user_id,
+      },
+    });
+
+    return habit;
+  }
 }

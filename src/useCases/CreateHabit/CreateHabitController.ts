@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { HabitsRepository } from '../../repositories/habits/database/HabitsRepository';
+import { UsersRepository } from '../../repositories/users/database/UsersRepository';
 import { CreateHabitUseCase } from './CreateHabitUseCase';
 
 class CreateHabitController {
@@ -9,7 +10,12 @@ class CreateHabitController {
     const { id } = request.user;
 
     const habitsRepository = new HabitsRepository();
-    const createHabits = new CreateHabitUseCase(habitsRepository);
+    const usersRepository = new UsersRepository();
+
+    const createHabits = new CreateHabitUseCase(
+      habitsRepository,
+      usersRepository,
+    );
 
     const habit = await createHabits.execute({
       habit_name,
