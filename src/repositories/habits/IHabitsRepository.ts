@@ -1,3 +1,5 @@
+import { DeleteResult } from 'typeorm';
+
 import { Habit } from '../../entities/Habit';
 
 import { ICreateHabitDTO } from '../../useCases/CreateHabit/ICreateHabitDTO';
@@ -9,4 +11,6 @@ export interface IHabitsRepository {
     category_id: string,
   ): Promise<Habit[] | undefined>;
   findByUser(user_id: string): Promise<Habit[] | undefined>;
+  delete(habit_id: string): Promise<DeleteResult>;
+  findByHabit(habit_id: string): Promise<Habit | undefined>;
 }

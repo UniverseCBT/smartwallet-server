@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { DeleteResult, getRepository } from 'typeorm';
 
 import { Habit } from '../../../entities/Habit';
 import { ICreateHabitDTO } from '../../../useCases/CreateHabit/ICreateHabitDTO';
@@ -33,6 +33,22 @@ export class HabitsRepository implements IHabitsRepository {
     const habit = await this.ormRepository.find({
       where: {
         user_id,
+      },
+    });
+
+    return habit;
+  }
+
+  public async delete(habit_id: string): Promise<DeleteResult> {
+    const habit = await this.ormRepository.delete(habit_id);
+
+    return habit;
+  }
+
+  public async findByHabit(habit_id: string): Promise<Habit | undefined> {
+    const habit = await this.ormRepository.findOne({
+      where: {
+        id: habit_id,
       },
     });
 
