@@ -5,6 +5,7 @@
   "username": "postgres",
   "password": "smartwallet-postgres",
   "database": "smartwallet",
+  "synchronize": true,
   "migrations": [
     "./src/database/migrations/*.ts"
   ],

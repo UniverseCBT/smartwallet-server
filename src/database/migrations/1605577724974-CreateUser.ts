@@ -33,11 +33,6 @@ export default class CreateUser1605577724974 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'wallet',
-            type: 'decimal',
-            default: 0.0,
-          },
-          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
