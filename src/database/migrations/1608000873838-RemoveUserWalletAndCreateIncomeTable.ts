@@ -91,5 +91,7 @@ export default class RemoveUserWalletAndCreateIncomeTable1608000873838
     await queryRunner.dropTable('incomes');
 
     await queryRunner.dropColumn('users', 'income_id');
+
+    await queryRunner.dropColumn('users', 'income_id');
   }
 }
