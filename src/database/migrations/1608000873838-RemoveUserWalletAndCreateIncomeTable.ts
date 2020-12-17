@@ -86,12 +86,10 @@ export default class RemoveUserWalletAndCreateIncomeTable1608000873838
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey('incomes', 'IncomeToUser');
 
-    await queryRunner.dropForeignKey('users', 'UserToIncome');
+    // await queryRunner.dropForeignKey('users', 'UserToIncome');
 
     await queryRunner.dropTable('incomes');
 
-    await queryRunner.dropColumn('users', 'income_id');
-
-    await queryRunner.dropColumn('users', 'income_id');
+    // await queryRunner.dropColumn('users', 'income_id');
   }
 }
