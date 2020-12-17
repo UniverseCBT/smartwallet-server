@@ -6,6 +6,8 @@ import { User } from '../../entities/User';
 import { IUsersRepository } from '../../repositories/users/IUsersRepository';
 import { CreateUserDTO } from './CreateUserDTO';
 
+import { IIncomeRepository } from '../../repositories/incomes/IIncomesRepository';
+
 import { IHash } from '../../providers/Hash/repositories/IHash';
 import { auth } from '../../config/auth';
 
@@ -17,6 +19,8 @@ interface Response {
 export class CreateUserUseCase {
   constructor(
     private usersRepository: IUsersRepository,
+
+    private incomesRepository: IIncomeRepository,
 
     private hashProvider: IHash,
   ) {}
@@ -47,6 +51,8 @@ export class CreateUserUseCase {
       email,
       password: passwordHash,
     });
+
+    await this.incomesRepository.create(user.id);
 
     const token = sign({}, auth.secret, {
       subject: user.id,
