@@ -23,9 +23,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  wallet: number;
-
   @CreateDateColumn()
   created_at: Date;
 
