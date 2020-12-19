@@ -16,6 +16,7 @@ export default class RemoveUserWalletAndCreateIncomeTable1608000873838
       new TableColumn({
         name: 'income_id',
         type: 'uuid',
+        isNullable: true,
       }),
     );
 
