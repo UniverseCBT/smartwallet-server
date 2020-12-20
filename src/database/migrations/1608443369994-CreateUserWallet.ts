@@ -5,14 +5,13 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class RemoveUserWalletAndCreateIncomeTable1608000873838
-  implements MigrationInterface {
+export class CreateUserWallet1608443369994 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
 
     await queryRunner.createTable(
       new Table({
-        name: 'incomes',
+        name: 'wallet',
         columns: [
           {
             name: 'id',
@@ -22,12 +21,7 @@ export default class RemoveUserWalletAndCreateIncomeTable1608000873838
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'expected_wallet',
-            type: 'decimal',
-            default: 0,
-          },
-          {
-            name: 'current_wallet',
+            name: 'available_money',
             type: 'decimal',
             default: 0,
           },
@@ -50,21 +44,21 @@ export default class RemoveUserWalletAndCreateIncomeTable1608000873838
     );
 
     await queryRunner.createForeignKey(
-      'incomes',
+      'wallet',
       new TableForeignKey({
-        name: 'IncomeToUser',
+        name: 'UserWallet',
         columnNames: ['user_id'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('incomes', 'IncomeToUser');
+    await queryRunner.dropForeignKey('wallet', 'UserWallet');
 
-    await queryRunner.dropTable('incomes');
+    await queryRunner.dropTable('wallet');
   }
 }
