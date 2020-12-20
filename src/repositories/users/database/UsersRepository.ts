@@ -71,10 +71,4 @@ export class UsersRepository implements IUsersRepository {
 
     return findUser;
   }
-
-  public async updateWallet(user: User): Promise<User> {
-    const updateUser = await this.ormRepository.save(user);
-
-    return updateUser;
-  }
 }

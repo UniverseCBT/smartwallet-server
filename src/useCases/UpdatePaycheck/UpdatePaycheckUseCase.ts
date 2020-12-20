@@ -1,7 +1,7 @@
 import { AppError } from '../../share/AppError';
 
 import { IPaycheckRepository } from '../../repositories/paycheck/IPaycheckRepository';
-import { IUsersRepository } from '../../repositories/users/IUsersRepository';
+import { IIncomeRepository } from '../../repositories/incomes/IIncomesRepository';
 
 interface Request {
   paycheck_id: string;
@@ -18,7 +18,7 @@ export class UpdatePaycheckUseCase {
   constructor(
     private paycheckRepository: IPaycheckRepository,
 
-    private usersRepository: IUsersRepository,
+    private incomeRepository: IIncomeRepository,
   ) {}
 
   public async execute({
@@ -43,13 +43,13 @@ export class UpdatePaycheckUseCase {
       throw new AppError('Paycheck name already exist');
     }
 
-    const user = await this.usersRepository.findByUserId(user_id);
+    const userIncome = await this.incomeRepository.findByUser(user_id);
 
-    if (!user) {
+    if (!userIncome) {
       throw new AppError('User does not exist');
     }
 
-    const userTotalWallet = Number(user.wallet);
+    const userTotalWallet = Number(userIncome.expected_wallet);
     const paycheckWallet = Number(userPaycheckWallet.wallet);
     const newWallet = Number(wallet);
 
@@ -57,9 +57,9 @@ export class UpdatePaycheckUseCase {
 
     const sumNewPaycheckWallet = totalUserLess + newWallet;
 
-    await this.usersRepository.updateWallet({
-      ...user,
-      wallet: sumNewPaycheckWallet || paycheckWallet,
+    await this.incomeRepository.updateExpectedWallet({
+      ...userIncome,
+      expected_wallet: sumNewPaycheckWallet || paycheckWallet,
     });
 
     const containName = name || userPaycheckWallet.name;

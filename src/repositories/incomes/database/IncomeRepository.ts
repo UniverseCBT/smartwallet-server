@@ -17,4 +17,20 @@ export class IncomeRepository implements IIncomeRepository {
 
     return income;
   }
+
+  public async findByUser(user_id: string): Promise<Income | undefined> {
+    const income = await this.ormRepository.findOne({
+      where: {
+        user_id,
+      },
+    });
+
+    return income;
+  }
+
+  public async updateExpectedWallet(incomeData: Income): Promise<Income> {
+    const income = await this.ormRepository.save(incomeData);
+
+    return income;
+  }
 }

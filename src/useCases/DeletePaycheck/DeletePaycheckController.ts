@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { PaycheckRepository } from '../../repositories/paycheck/database/PaycheckRepository';
-import { UsersRepository } from '../../repositories/users/database/UsersRepository';
+import { IncomeRepository } from '../../repositories/incomes/database/IncomeRepository';
 
 import { DeletePaycheckUseCase } from './DeletePaycheckUseCase';
 
@@ -10,11 +10,11 @@ class DeletePaycheckController {
     const { paycheck_id } = request.params;
 
     const paycheckRepository = new PaycheckRepository();
-    const usersRepository = new UsersRepository();
+    const incomeRepository = new IncomeRepository();
 
     const deletePaycheck = new DeletePaycheckUseCase(
       paycheckRepository,
-      usersRepository,
+      incomeRepository,
     );
 
     await deletePaycheck.execute({
