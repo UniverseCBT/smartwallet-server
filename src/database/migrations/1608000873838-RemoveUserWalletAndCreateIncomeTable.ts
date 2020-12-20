@@ -57,7 +57,7 @@ export default class RemoveUserWalletAndCreateIncomeTable1608000873838
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
       }),
     );
   }
