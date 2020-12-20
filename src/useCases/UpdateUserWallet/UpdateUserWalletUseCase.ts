@@ -1,5 +1,5 @@
-import { User } from '../../entities/User';
-import { IUsersRepository } from '../../repositories/users/IUsersRepository';
+import { IIncomeRepository } from '../../repositories/incomes/IIncomesRepository';
+import { Income } from '../../entities/Income';
 
 import { AppError } from '../../share/AppError';
 
@@ -9,24 +9,24 @@ interface Request {
 }
 
 export class UpdateUserWalletUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(private incomeRepository: IIncomeRepository) {}
 
-  public async execute({ user_id, wallet }: Request): Promise<User> {
-    const user = await this.usersRepository.findByUserId(user_id);
+  public async execute({ user_id, wallet }: Request): Promise<Income> {
+    const userIncome = await this.incomeRepository.findByUser(user_id);
 
-    if (!user) {
+    if (!userIncome) {
       throw new AppError('User does not exist');
     }
 
-    const user_wallet = Number(user.wallet);
+    const expectedWallet = Number(userIncome.expected_wallet);
 
-    const sum_paycheck = wallet + user_wallet;
+    const sum_paycheck = wallet + expectedWallet;
 
-    await this.usersRepository.updateWallet({
-      ...user,
-      wallet: sum_paycheck,
+    await this.incomeRepository.updateExpectedWallet({
+      ...userIncome,
+      expected_wallet: sum_paycheck,
     });
 
-    return user;
+    return userIncome;
   }
 }

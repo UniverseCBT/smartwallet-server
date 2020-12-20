@@ -4,7 +4,7 @@ import { PaycheckRepository } from '../../repositories/paycheck/database/Paychec
 import { CreatePaycheckUseCase } from './CreatePaycheckUseCase';
 
 import { UpdateUserWalletUseCase } from '../UpdateUserWallet/UpdateUserWalletUseCase';
-import { UsersRepository } from '../../repositories/users/database/UsersRepository';
+import { IncomeRepository } from '../../repositories/incomes/database/IncomeRepository';
 
 class CreatePaycheckController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -20,8 +20,8 @@ class CreatePaycheckController {
       user_id: id,
     });
 
-    const usersRepository = new UsersRepository();
-    const updateUserWallet = new UpdateUserWalletUseCase(usersRepository);
+    const incomeRepository = new IncomeRepository();
+    const updateUserWallet = new UpdateUserWalletUseCase(incomeRepository);
 
     await updateUserWallet.execute({
       user_id: id,

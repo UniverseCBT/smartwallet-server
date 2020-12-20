@@ -1,7 +1,7 @@
 import { AppError } from '../../share/AppError';
 
 import { IPaycheckRepository } from '../../repositories/paycheck/IPaycheckRepository';
-import { IUsersRepository } from '../../repositories/users/IUsersRepository';
+import { IIncomeRepository } from '../../repositories/incomes/IIncomesRepository';
 
 interface Request {
   paycheck_id: string;
@@ -12,7 +12,7 @@ export class DeletePaycheckUseCase {
   constructor(
     private paycheckRepository: IPaycheckRepository,
 
-    private usersRepository: IUsersRepository,
+    private incomeRepository: IIncomeRepository,
   ) {}
 
   public async execute({ paycheck_id, user_id }: Request): Promise<void> {
@@ -33,17 +33,17 @@ export class DeletePaycheckUseCase {
       throw new AppError('User does not exist with this paycheck');
     }
 
-    const user = await this.usersRepository.findByUserId(user_id);
+    const userIncome = await this.incomeRepository.findByUser(user_id);
 
-    if (!user) {
+    if (!userIncome) {
       throw new AppError('User does not exist');
     }
 
-    const walletLess = user.wallet - userPaycheckWallet.wallet;
+    const walletLess = userIncome.expected_wallet - userPaycheckWallet.wallet;
 
-    await this.usersRepository.updateWallet({
-      ...user,
-      wallet: walletLess,
+    await this.incomeRepository.updateExpectedWallet({
+      ...userIncome,
+      expected_wallet: walletLess,
     });
 
     await this.paycheckRepository.delete(paycheck_id);
