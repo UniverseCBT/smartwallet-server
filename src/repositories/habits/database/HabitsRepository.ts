@@ -1,7 +1,7 @@
 import { DeleteResult, getRepository } from 'typeorm';
 
 import { Habit } from '../../../entities/Habit';
-import { ICreateHabitDTO } from '../../../useCases/CreateHabit/ICreateHabitDTO';
+import { ICreateHabitDTO } from '../../../useCases/habit/CreateHabit/ICreateHabitDTO';
 import { IHabitsRepository } from '../IHabitsRepository';
 
 export class HabitsRepository implements IHabitsRepository {

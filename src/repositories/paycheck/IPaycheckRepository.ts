@@ -1,7 +1,7 @@
 import { DeleteResult } from 'typeorm';
 
 import { Paycheck } from '../../entities/Paycheck';
-import { ICreatePaycheckDTO } from '../../useCases/CreatePaycheck/ICreatePaycheckDTO';
+import { ICreatePaycheckDTO } from '../../useCases/paycheck/CreatePaycheck/ICreatePaycheckDTO';
 
 export interface IPaycheckRepository {
   create(data: ICreatePaycheckDTO): Promise<Paycheck>;

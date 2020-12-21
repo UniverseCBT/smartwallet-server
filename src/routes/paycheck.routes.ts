@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import CreatePaycheckController from '../useCases/CreatePaycheck/CreatePaycheckController';
-import DeletePaycheckController from '../useCases/DeletePaycheck/DeletePaycheckController';
-import UpdatePaycheckController from '../useCases/UpdatePaycheck/UpdatePaycheckController';
+import CreatePaycheckController from '../useCases/paycheck/CreatePaycheck/CreatePaycheckController';
+import DeletePaycheckController from '../useCases/paycheck/DeletePaycheck/DeletePaycheckController';
+import UpdatePaycheckController from '../useCases/paycheck/UpdatePaycheck/UpdatePaycheckController';
 
 const routes = Router();
 

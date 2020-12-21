@@ -2,7 +2,7 @@ import { DeleteResult } from 'typeorm';
 
 import { Habit } from '../../entities/Habit';
 
-import { ICreateHabitDTO } from '../../useCases/CreateHabit/ICreateHabitDTO';
+import { ICreateHabitDTO } from '../../useCases/habit/CreateHabit/ICreateHabitDTO';
 
 export interface IHabitsRepository {
   create(data: ICreateHabitDTO): Promise<Habit>;
