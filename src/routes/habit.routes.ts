@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import CreateHabitController from '../useCases/CreateHabit/CreateHabitController';
-import FindCategoryByHabitsController from '../useCases/FindCategoryByHabits/FindCategoryByHabitsController';
-import DeleteHabitController from '../useCases/DeleteHabit/DeleteHabitController';
+import CreateHabitController from '../useCases/habit/CreateHabit/CreateHabitController';
+import FindCategoryByHabitsController from '../useCases/habit/FindCategoryByHabits/FindCategoryByHabitsController';
+import DeleteHabitController from '../useCases/habit/DeleteHabit/DeleteHabitController';
 
 const routes = Router();
 
