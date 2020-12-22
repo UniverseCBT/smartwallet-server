@@ -81,10 +81,6 @@ export class CreateHabits1607303260363 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('habits', 'UsersHabits');
-
-    await queryRunner.dropForeignKey('habits', 'CategoryHabits');
-
     await queryRunner.dropTable('habits');
   }
 }

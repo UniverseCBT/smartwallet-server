@@ -57,8 +57,6 @@ export class CreateUserWallet1608443369994 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('wallet', 'UserWallet');
-
     await queryRunner.dropTable('wallet');
   }
 }

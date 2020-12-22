@@ -60,8 +60,6 @@ export class CreatePaycheck1606095586925 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('paychecks', 'UserPaycheck');
-
     await queryRunner.dropTable('paychecks');
   }
 }
