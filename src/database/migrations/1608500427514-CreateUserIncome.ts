@@ -63,8 +63,6 @@ export default class CreateUserIncome1608500427514
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('incomes', 'UserIncome');
-
     await queryRunner.dropTable('incomes');
   }
 }
