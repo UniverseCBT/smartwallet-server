@@ -23,7 +23,10 @@ export class Habit {
   importance: number;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  price: number;
+  expected_spent: number;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  current_spent: number;
 
   @Column()
   category_id: string;

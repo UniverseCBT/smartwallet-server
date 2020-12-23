@@ -30,8 +30,14 @@ export class CreateHabits1607303260363 implements MigrationInterface {
             default: 0,
           },
           {
-            name: 'price',
+            name: 'expected_spent',
             type: 'decimal',
+            default: 0,
+          },
+          {
+            name: 'current_spent',
+            type: 'decimal',
+            default: 0,
           },
           {
             name: 'category_id',
