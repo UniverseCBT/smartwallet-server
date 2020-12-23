@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { UsersRepository } from '../../../repositories/users/database/UsersRepository';
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
+import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
 import { Bcrypt } from '../../../providers/Hash/implementations/Bcrypt';
 
 import { CreateUserUseCase } from './CreateUserUseCase';
@@ -12,11 +13,13 @@ class CreateUserController {
 
     const userRepository = new UsersRepository();
     const incomesRepository = new IncomeRepository();
+    const walletRepository = new WalletRepository();
     const hashProvider = new Bcrypt();
 
     const userUseCase = new CreateUserUseCase(
       userRepository,
       incomesRepository,
+      walletRepository,
       hashProvider,
     );
 
