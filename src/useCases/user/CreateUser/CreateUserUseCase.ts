@@ -10,6 +10,7 @@ import { IIncomeRepository } from '../../../repositories/incomes/IIncomesReposit
 
 import { IHash } from '../../../providers/Hash/repositories/IHash';
 import { auth } from '../../../config/auth';
+import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 
 interface Response {
   user: User;
@@ -21,6 +22,8 @@ export class CreateUserUseCase {
     private usersRepository: IUsersRepository,
 
     private incomesRepository: IIncomeRepository,
+
+    private walletRepository: IWalletRepository,
 
     private hashProvider: IHash,
   ) {}
@@ -54,6 +57,8 @@ export class CreateUserUseCase {
 
     try {
       await this.incomesRepository.create(user.id);
+
+      await this.walletRepository.create(user.id);
     } catch {
       throw new AppError('Your income went wrong', 500);
     }

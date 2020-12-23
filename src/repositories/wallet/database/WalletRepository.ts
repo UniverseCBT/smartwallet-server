@@ -1,3 +1,19 @@
-import { IWalletRepository } from '../IWalletRepository';
+import { getRepository } from 'typeorm';
 
-export class WalletRepository implements IWalletRepository {}
+import { IWalletRepository } from '../IWalletRepository';
+import { Wallet } from '../../../entities/Wallet';
+
+export class WalletRepository implements IWalletRepository {
+  private ormRepository = getRepository(Wallet);
+
+  public async create(user_id: string): Promise<Wallet> {
+    const wallet = this.ormRepository.create({
+      available_money: 0,
+      user_id,
+    });
+
+    await this.ormRepository.save(wallet);
+
+    return wallet;
+  }
+}
