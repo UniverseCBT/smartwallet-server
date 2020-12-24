@@ -55,13 +55,8 @@ export class CreateUserUseCase {
       password: passwordHash,
     });
 
-    try {
-      await this.incomesRepository.create(user.id);
-
-      await this.walletRepository.create(user.id);
-    } catch {
-      throw new AppError('Your income went wrong', 500);
-    }
+    await this.incomesRepository.create(user.id);
+    await this.walletRepository.create(user.id);
 
     const token = sign({}, auth.secret, {
       subject: user.id,

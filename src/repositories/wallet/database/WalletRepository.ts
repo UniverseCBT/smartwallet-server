@@ -8,7 +8,6 @@ export class WalletRepository implements IWalletRepository {
 
   public async create(user_id: string): Promise<Wallet> {
     const wallet = this.ormRepository.create({
-      available_money: 0,
       user_id,
     });
 

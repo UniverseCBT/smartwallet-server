@@ -16,10 +16,10 @@ export class Income {
   id: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  expected_wallet: number;
+  expected_money: number;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  current_wallet: number;
+  current_money: number;
 
   @Column()
   user_id: string;

@@ -1,15 +1,13 @@
 import { getRepository } from 'typeorm';
-import { Income } from '../../../entities/Income';
 
 import { IIncomeRepository } from '../IIncomesRepository';
+import { Income } from '../../../entities/Income';
 
 export class IncomeRepository implements IIncomeRepository {
   private ormRepository = getRepository(Income);
 
   public async create(user_id: string): Promise<Income> {
     const income = this.ormRepository.create({
-      expected_wallet: 0,
-      current_wallet: 0,
       user_id,
     });
 
