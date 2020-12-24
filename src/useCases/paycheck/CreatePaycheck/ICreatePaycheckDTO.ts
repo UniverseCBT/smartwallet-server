@@ -1,5 +1,7 @@
 export interface ICreatePaycheckDTO {
   name: string;
-  wallet: number;
+  expected_received: number;
+  current_received: number;
+  received_date: string;
   user_id: string;
 }
