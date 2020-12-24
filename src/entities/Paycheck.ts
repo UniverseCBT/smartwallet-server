@@ -19,7 +19,13 @@ export class Paycheck {
   name: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  wallet: number;
+  expected_received: number;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  current_received: number;
+
+  @Column()
+  received_date: string;
 
   @Column()
   user_id: string;

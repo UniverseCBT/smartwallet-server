@@ -25,8 +25,17 @@ export class CreatePaycheck1606095586925 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'wallet',
+            name: 'expected_received',
             type: 'decimal',
+          },
+          {
+            name: 'current_received',
+            type: 'decimal',
+            default: 0,
+          },
+          {
+            name: 'received_date',
+            type: 'varchar',
           },
           {
             name: 'user_id',
