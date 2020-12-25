@@ -21,6 +21,9 @@ export class Income {
   @Column('decimal', { precision: 10, scale: 2 })
   current_money: number;
 
+  @Column('text')
+  note: string;
+
   @Column()
   user_id: string;
 
