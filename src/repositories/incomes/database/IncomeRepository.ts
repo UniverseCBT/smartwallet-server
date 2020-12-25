@@ -26,7 +26,7 @@ export class IncomeRepository implements IIncomeRepository {
     return income;
   }
 
-  public async updateExpectedWallet(incomeData: Income): Promise<Income> {
+  public async updateExpectedMoney(incomeData: Income): Promise<Income> {
     const income = await this.ormRepository.save(incomeData);
 
     return income;
