@@ -32,11 +32,6 @@ export default class CreateUserIncome1608500427514
             default: 0,
           },
           {
-            name: 'note',
-            type: 'text',
-            isNullable: true,
-          },
-          {
             name: 'user_id',
             type: 'uuid',
           },
