@@ -26,7 +26,7 @@ export class CreatePaycheckUseCase {
     }
 
     if (!user_id) {
-      throw new AppError('This user does not exist');
+      throw new AppError('You can`t leave this field in blank.');
     }
 
     if (expected_received < 0.8) {

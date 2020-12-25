@@ -8,9 +8,10 @@ import { CreateUserDTO } from './CreateUserDTO';
 
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
 
+import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
+
 import { IHash } from '../../../providers/Hash/repositories/IHash';
 import { auth } from '../../../config/auth';
-import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 
 interface Response {
   user: User;
