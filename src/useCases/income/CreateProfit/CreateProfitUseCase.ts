@@ -1,5 +1,5 @@
-import { Income } from '../../entities/Income';
-import { IIncomeRepository } from '../../repositories/incomes/IIncomesRepository';
+import { Income } from '../../../entities/Income';
+import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
 
 interface Request {
   user_id: string;
