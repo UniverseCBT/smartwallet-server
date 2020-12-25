@@ -6,8 +6,9 @@ import { Income } from '../../../entities/Income';
 export class IncomeRepository implements IIncomeRepository {
   private ormRepository = getRepository(Income);
 
-  public async create(user_id: string): Promise<Income> {
+  public async create(user_id: string, note?: string): Promise<Income> {
     const income = this.ormRepository.create({
+      note,
       user_id,
     });
 
