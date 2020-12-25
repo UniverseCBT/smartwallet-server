@@ -1,6 +1,8 @@
 import { Paycheck } from '../../../entities/Paycheck';
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 
+import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+
 import { AppError } from '../../../share/AppError';
 
 interface Request {
@@ -11,7 +13,11 @@ interface Request {
 }
 
 export class CreatePaycheckUseCase {
-  constructor(private paycheckRepository: IPaycheckRepository) {}
+  constructor(
+    private paycheckRepository: IPaycheckRepository,
+
+    private incomeRepository: IIncomeRepository,
+  ) {}
 
   public async execute({
     name,
@@ -26,7 +32,7 @@ export class CreatePaycheckUseCase {
     }
 
     if (!user_id) {
-      throw new AppError('This user does not exist');
+      throw new AppError('You can`t leave this field in blank.');
     }
 
     if (expected_received < 0.8) {
@@ -45,6 +51,19 @@ export class CreatePaycheckUseCase {
       expected_received,
       received_date,
       user_id,
+    });
+
+    const income = await this.incomeRepository.findByUser(user_id);
+
+    if (!income) {
+      throw new AppError('Error Income does not exist, contact an admin', 500);
+    }
+
+    const sumExpectedMoney = expected_received + Number(income.expected_money);
+
+    await this.incomeRepository.updateExpectedMoney({
+      ...income,
+      expected_money: sumExpectedMoney,
     });
 
     return paycheck;

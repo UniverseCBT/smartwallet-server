@@ -3,13 +3,20 @@ import { Request, Response } from 'express';
 import { PaycheckRepository } from '../../../repositories/paycheck/database/PaycheckRepository';
 import { CreatePaycheckUseCase } from './CreatePaycheckUseCase';
 
+import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
+
 class CreatePaycheckController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, expected_received, received_date } = request.body;
     const { id } = request.user;
 
     const paycheckRepository = new PaycheckRepository();
-    const createPaycheckUseCase = new CreatePaycheckUseCase(paycheckRepository);
+    const incomeRepository = new IncomeRepository();
+
+    const createPaycheckUseCase = new CreatePaycheckUseCase(
+      paycheckRepository,
+      incomeRepository,
+    );
 
     const paycheck = await createPaycheckUseCase.execute({
       name,
