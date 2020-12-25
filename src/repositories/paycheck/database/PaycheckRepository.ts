@@ -7,12 +7,8 @@ import { ICreatePaycheckDTO } from '../../../useCases/paycheck/CreatePaycheck/IC
 export class PaycheckRepository implements IPaycheckRepository {
   private ormRepository = getRepository(Paycheck);
 
-  public async create({
-    name,
-    wallet,
-    user_id,
-  }: ICreatePaycheckDTO): Promise<Paycheck> {
-    const paycheck = this.ormRepository.create({ name, wallet, user_id });
+  public async create(data: ICreatePaycheckDTO): Promise<Paycheck> {
+    const paycheck = this.ormRepository.create(data);
 
     await this.ormRepository.save(paycheck);
 
