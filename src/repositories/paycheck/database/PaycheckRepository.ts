@@ -41,7 +41,7 @@ export class PaycheckRepository implements IPaycheckRepository {
     return paycheck;
   }
 
-  public async findWallet(
+  public async findPaycheckByUser(
     paycheck_id: string,
     user_id: string,
   ): Promise<Paycheck | undefined> {

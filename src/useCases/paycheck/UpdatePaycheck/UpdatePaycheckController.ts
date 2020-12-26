@@ -7,7 +7,7 @@ import { UpdatePaycheckUseCase } from './UpdatePaycheckUseCase';
 
 class UpdatePaycheckController {
   public async update(request: Request, response: Response): Promise<Response> {
-    const { name, wallet } = request.body;
+    const { name, expected_received } = request.body;
     const { paycheck_id } = request.params;
     const { id: user_id } = request.user;
 
@@ -23,7 +23,7 @@ class UpdatePaycheckController {
       paycheck_id,
       user_id,
       name,
-      wallet,
+      expected_received,
     });
 
     return response.status(200).json(paycheck);
