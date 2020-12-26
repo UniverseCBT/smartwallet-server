@@ -7,6 +7,16 @@ import { ICreatePaycheckDTO } from '../../../useCases/paycheck/CreatePaycheck/IC
 export class PaycheckRepository implements IPaycheckRepository {
   private ormRepository = getRepository(Paycheck);
 
+  public async findAll(user_id: string): Promise<Paycheck[]> {
+    const paycheck = await this.ormRepository.find({
+      where: {
+        user_id,
+      },
+    });
+
+    return paycheck;
+  }
+
   public async create(data: ICreatePaycheckDTO): Promise<Paycheck> {
     const paycheck = this.ormRepository.create(data);
 
