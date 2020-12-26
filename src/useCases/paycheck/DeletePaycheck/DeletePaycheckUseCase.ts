@@ -24,26 +24,26 @@ export class DeletePaycheckUseCase {
       throw new AppError('Paycheck not found', 404);
     }
 
-    const userPaycheckWallet = await this.paycheckRepository.findWallet(
+    const paycheck = await this.paycheckRepository.findWallet(
       paycheck_id,
       user_id,
     );
 
-    if (!userPaycheckWallet) {
+    if (!paycheck) {
       throw new AppError('User does not exist with this paycheck');
     }
 
-    const userIncome = await this.incomeRepository.findByUser(user_id);
+    const income = await this.incomeRepository.findByUser(user_id);
 
-    if (!userIncome) {
-      throw new AppError('User does not exist');
+    if (!income) {
+      throw new AppError('Error! contact an admin to this error', 500);
     }
 
-    const walletLess = userIncome.expected_wallet - userPaycheckWallet.wallet;
+    const deleteIncome = income.expected_money - paycheck.expected_received;
 
-    await this.incomeRepository.updateExpectedWallet({
-      ...userIncome,
-      expected_wallet: walletLess,
+    await this.incomeRepository.updateExpectedMoney({
+      ...income,
+      expected_money: deleteIncome,
     });
 
     await this.paycheckRepository.delete(paycheck_id);
