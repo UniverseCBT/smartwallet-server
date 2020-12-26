@@ -4,6 +4,7 @@ import { Paycheck } from '../../entities/Paycheck';
 import { ICreatePaycheckDTO } from '../../useCases/paycheck/CreatePaycheck/ICreatePaycheckDTO';
 
 export interface IPaycheckRepository {
+  findAll(user_id: string): Promise<Paycheck[]>;
   create(data: ICreatePaycheckDTO): Promise<Paycheck>;
   delete(paycheck_id: string): Promise<DeleteResult>;
   update(paycheck: Paycheck): Promise<Paycheck>;

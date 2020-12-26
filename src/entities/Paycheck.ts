@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { User } from './User';
 
@@ -28,12 +29,14 @@ export class Paycheck {
   received_date: string;
 
   @Column()
+  @Exclude()
   user_id: string;
 
   @ManyToOne(() => User, user => user, {
     eager: true,
   })
   @JoinColumn({ name: 'user_id' })
+  @Exclude()
   user: User;
 
   @CreateDateColumn()
