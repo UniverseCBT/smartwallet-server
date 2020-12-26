@@ -8,7 +8,7 @@ export interface IPaycheckRepository {
   delete(paycheck_id: string): Promise<DeleteResult>;
   update(paycheck: Paycheck): Promise<Paycheck>;
   findByName(name: string, user_id: string): Promise<Paycheck | undefined>;
-  findWallet(
+  findPaycheckByUser(
     paycheck_id: string,
     user_id: string,
   ): Promise<Paycheck | undefined>;

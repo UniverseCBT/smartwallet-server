@@ -24,7 +24,7 @@ export class DeletePaycheckUseCase {
       throw new AppError('Paycheck not found', 404);
     }
 
-    const paycheck = await this.paycheckRepository.findWallet(
+    const paycheck = await this.paycheckRepository.findPaycheckByUser(
       paycheck_id,
       user_id,
     );

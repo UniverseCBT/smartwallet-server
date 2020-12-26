@@ -6,7 +6,7 @@ import { IIncomeRepository } from '../../../repositories/incomes/IIncomesReposit
 interface Request {
   paycheck_id: string;
   user_id: string;
-  wallet?: number;
+  expected_received?: number;
   name: string;
 }
 
@@ -24,50 +24,51 @@ export class UpdatePaycheckUseCase {
   public async execute({
     paycheck_id,
     user_id,
-    wallet,
+    expected_received,
     name,
   }: Request): Promise<Response> {
-    const userPaycheckWallet = await this.paycheckRepository.findWallet(
+    const paycheck = await this.paycheckRepository.findPaycheckByUser(
       paycheck_id,
       user_id,
     );
 
-    if (!userPaycheckWallet) {
+    if (!paycheck) {
       throw new AppError('User does not exist with this paycheck');
     }
 
     const findName = await this.paycheckRepository.findByName(name, user_id);
-    const nameExist = findName?.id !== userPaycheckWallet.id && findName;
+
+    const nameExist = findName?.id !== paycheck.id && findName;
 
     if (nameExist) {
       throw new AppError('Paycheck name already exist');
     }
 
-    const userIncome = await this.incomeRepository.findByUser(user_id);
+    const income = await this.incomeRepository.findByUser(user_id);
 
-    if (!userIncome) {
+    if (!income) {
       throw new AppError('User does not exist');
     }
 
-    const userTotalWallet = Number(userIncome.expected_wallet);
-    const paycheckWallet = Number(userPaycheckWallet.wallet);
-    const newWallet = Number(wallet);
+    const incomeExpectedMoney = Number(income.expected_money);
+    const expectedPaycheckReceived = Number(paycheck.expected_received);
+    const newWallet = Number(expected_received);
 
-    const totalUserLess = userTotalWallet - paycheckWallet;
+    const totalUserLess = incomeExpectedMoney - expectedPaycheckReceived;
 
     const sumNewPaycheckWallet = totalUserLess + newWallet;
 
-    await this.incomeRepository.updateExpectedWallet({
-      ...userIncome,
-      expected_wallet: sumNewPaycheckWallet || paycheckWallet,
+    await this.incomeRepository.updateExpectedMoney({
+      ...income,
+      expected_money: sumNewPaycheckWallet || expectedPaycheckReceived,
     });
 
-    const containName = name || userPaycheckWallet.name;
+    const containName = name || paycheck.name;
 
     await this.paycheckRepository.update({
-      ...userPaycheckWallet,
+      ...paycheck,
       name: containName,
-      wallet: newWallet || paycheckWallet,
+      expected_received: newWallet || expectedPaycheckReceived,
     });
 
     return {
