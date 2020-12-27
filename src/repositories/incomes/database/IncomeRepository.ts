@@ -31,4 +31,10 @@ export class IncomeRepository implements IIncomeRepository {
 
     return income;
   }
+
+  public async updateCurrentMoney(incomeData: Income): Promise<Income> {
+    const income = await this.ormRepository.save(incomeData);
+
+    return income;
+  }
 }

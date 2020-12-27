@@ -15,4 +15,20 @@ export class WalletRepository implements IWalletRepository {
 
     return wallet;
   }
+
+  public async findByUser(user_id: string): Promise<Wallet | undefined> {
+    const wallet = await this.ormRepository.findOne({
+      where: {
+        user_id,
+      },
+    });
+
+    return wallet;
+  }
+
+  public async updateWallet(walletData: Wallet): Promise<Wallet> {
+    const wallet = await this.ormRepository.save(walletData);
+
+    return wallet;
+  }
 }
