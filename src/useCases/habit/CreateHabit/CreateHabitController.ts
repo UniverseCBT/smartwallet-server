@@ -6,7 +6,12 @@ import { CreateHabitUseCase } from './CreateHabitUseCase';
 
 class CreateHabitController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { habit_name, importance, price, category_id } = request.body;
+    const {
+      habit_name,
+      importance,
+      expected_spent,
+      category_id,
+    } = request.body;
     const { id } = request.user;
 
     const habitsRepository = new HabitsRepository();
@@ -20,7 +25,7 @@ class CreateHabitController {
     const habit = await createHabits.execute({
       habit_name,
       importance,
-      price,
+      expected_spent,
       category_id,
       user_id: id,
     });

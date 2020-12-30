@@ -8,7 +8,7 @@ import { AppError } from '../../../share/AppError';
 interface Request {
   habit_name: string;
   importance: number;
-  price: number;
+  expected_spent: number;
   category_id: string;
   user_id: string;
 }
@@ -23,7 +23,7 @@ export class CreateHabitUseCase {
   public async execute({
     habit_name,
     importance,
-    price,
+    expected_spent,
     category_id,
     user_id,
   }: Request): Promise<Habit> {
