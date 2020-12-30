@@ -10,8 +10,8 @@ import {
 
 import { Habit } from './Habit';
 
-@Entity('profit')
-export class Profit {
+@Entity('expense')
+export class Expense {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
