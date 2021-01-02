@@ -32,12 +32,12 @@ export class CreateHabitUseCase {
     category_id,
     user_id,
   }: Request): Promise<Habit> {
-    const findCategory = await this.habitsRepository.findByCategory(
+    const category = await this.habitsRepository.findByCategory(
       user_id,
       category_id,
     );
 
-    if (!findCategory) {
+    if (!category) {
       throw new AppError('User or Category does not exist');
     }
 
@@ -72,23 +72,27 @@ export class CreateHabitUseCase {
       throw new AppError('as well ? wallet not exist ? contact an admin', 500);
     }
 
+    if (expected_spent === undefined || expected_spent === null) {
+      throw new AppError(`Expected spent cannot be empty`);
+    }
+
     if (current_spent) {
       const totalCurrentHabits = findHabits.reduce((acumulator, value) => {
         return acumulator + Number(value.current_spent);
       }, 0);
 
-      if (totalCurrentHabits + current_spent > Number(wallet.available_money)) {
+      if (current_spent + totalCurrentHabits > Number(wallet.available_money)) {
         throw new AppError(
-          `Sorry but you dont't have enough money in your wallet.`,
+          `Sorry but you dont't have enough money in your wallet. You reached 100% from you wallet.`,
         );
       }
 
-      const isBills = findCategory.find(bills => {
+      const isBills = category.find(bills => {
         return bills.category.category === 'Bills';
       });
 
       if (isBills) {
-        const getBillsTotal = findCategory.reduce((acumulator, value) => {
+        const getBillsTotal = category.reduce((acumulator, value) => {
           return acumulator + Number(value.current_spent);
         }, 0);
 
@@ -103,6 +107,15 @@ export class CreateHabitUseCase {
           throw new AppError('Bills cannot overtake 98% of the total budget');
         }
       }
+
+      const availableMoney = Number(wallet.available_money);
+
+      const moneySpent = current_spent - availableMoney;
+
+      await this.walletRepository.updateWallet({
+        ...wallet,
+        available_money: moneySpent,
+      });
     }
 
     const habit = await this.habitsRepository.create({

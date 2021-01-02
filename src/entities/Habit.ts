@@ -7,6 +7,7 @@ import {
   JoinColumn,
   Entity,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { Category } from './Category';
 import { User } from './User';
@@ -37,9 +38,11 @@ export class Habit {
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
+  @Exclude()
   @Column()
   user_id: string;
 
+  @Exclude()
   @ManyToOne(() => User, user => user, {
     eager: true,
   })
