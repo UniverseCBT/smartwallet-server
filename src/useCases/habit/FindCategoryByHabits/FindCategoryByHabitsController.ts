@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { classToClass } from 'class-transformer';
 
 import { CategoryRepository } from '../../../repositories/category/database/CategoryRepository';
 import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
@@ -20,7 +21,7 @@ class FindCategoryByHabits {
 
     const habits = await findCategoryByHabits.execute(id, category_id);
 
-    return response.status(200).json(habits);
+    return response.status(200).json(classToClass(habits));
   }
 }
 

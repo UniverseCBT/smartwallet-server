@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 
 import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
-import { UsersRepository } from '../../../repositories/users/database/UsersRepository';
+import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
+import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
 import { CreateHabitUseCase } from './CreateHabitUseCase';
 
 class CreateHabitController {
@@ -10,22 +11,26 @@ class CreateHabitController {
       habit_name,
       importance,
       expected_spent,
+      current_spent,
       category_id,
     } = request.body;
     const { id } = request.user;
 
     const habitsRepository = new HabitsRepository();
-    const usersRepository = new UsersRepository();
+    const incomeRepository = new IncomeRepository();
+    const walletRepository = new WalletRepository();
 
     const createHabits = new CreateHabitUseCase(
       habitsRepository,
-      usersRepository,
+      incomeRepository,
+      walletRepository,
     );
 
     const habit = await createHabits.execute({
       habit_name,
       importance,
       expected_spent,
+      current_spent,
       category_id,
       user_id: id,
     });
