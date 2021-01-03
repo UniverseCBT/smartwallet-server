@@ -6,6 +6,8 @@ import { IWalletRepository } from '../../../repositories/wallet/IWalletRepositor
 
 import { AppError } from '../../../share/AppError';
 
+import { transformPercent } from '../../../util/transformPercent';
+
 interface Request {
   habit_name: string;
   importance: number;
@@ -31,7 +33,7 @@ export class CreateHabitUseCase {
     current_spent,
     category_id,
     user_id,
-  }: Request): Promise<Habit> {
+  }: Request): Promise<Habit | void> {
     const category = await this.habitsRepository.findByCategory(
       user_id,
       category_id,
@@ -92,18 +94,12 @@ export class CreateHabitUseCase {
       });
 
       if (isBills) {
-        const getBillsTotal = category.reduce((acumulator, value) => {
-          return acumulator + Number(value.current_spent);
-        }, 0);
-
-        const percentBillsResult = Math.ceil(
-          (getBillsTotal * 100) / Number(wallet.available_money),
-        );
-        const percentActualResult = Math.ceil(
-          (current_spent * 100) / wallet.available_money,
+        const percentActualResult = transformPercent(
+          current_spent,
+          Number(wallet.available_money),
         );
 
-        if (percentBillsResult + percentActualResult > 98) {
+        if (percentActualResult >= 98) {
           throw new AppError('Bills cannot overtake 98% of the total budget');
         }
       }
