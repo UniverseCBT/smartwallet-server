@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import { ExpenseRepository } from '../../../repositories/expense/database/ExpenseRepository';
 import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
 import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
+import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
+
 import { CreateExpenseUseCase } from './CreateExpenseUseCase';
 
 class CreateExpenseController {
@@ -13,21 +15,23 @@ class CreateExpenseController {
     const expenseRepository = new ExpenseRepository();
     const habitRepository = new HabitsRepository();
     const walletRepository = new WalletRepository();
+    const incomeRepository = new IncomeRepository();
 
     const createExpenseUseCase = new CreateExpenseUseCase(
       expenseRepository,
       habitRepository,
       walletRepository,
+      incomeRepository,
     );
 
-    await createExpenseUseCase.execute({
+    const expense = await createExpenseUseCase.execute({
       note,
       habit_id,
       current_spent,
       user_id: id,
     });
 
-    return response.status(200).json({ ok: true });
+    return response.status(200).json(expense);
   }
 }
 

@@ -1,5 +1,5 @@
 export interface ICreateExpenseDTO {
-  note: string;
+  note?: string;
   value: number;
   habit_id: string;
 }
