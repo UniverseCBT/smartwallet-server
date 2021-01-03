@@ -47,13 +47,13 @@ export class CreateHabitUseCase {
       throw new AppError('as well ? income not exist ? contact an admin', 500);
     }
 
-    const findHabits = await this.habitsRepository.findByUser(user_id);
+    const habits = await this.habitsRepository.findByUser(user_id);
 
-    if (!findHabits) {
+    if (!habits) {
       throw new AppError('No habit found', 404);
     }
 
-    const totalExpectedHabits = findHabits.reduce((acumulator, value) => {
+    const totalExpectedHabits = habits.reduce((acumulator, value) => {
       return acumulator + Number(value.expected_spent);
     }, 0);
 
@@ -77,7 +77,7 @@ export class CreateHabitUseCase {
     }
 
     if (current_spent) {
-      const totalCurrentHabits = findHabits.reduce((acumulator, value) => {
+      const totalCurrentHabits = habits.reduce((acumulator, value) => {
         return acumulator + Number(value.current_spent);
       }, 0);
 
