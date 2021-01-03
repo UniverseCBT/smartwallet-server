@@ -18,6 +18,9 @@ export class Profit {
   @Column()
   notes: string;
 
+  @Column('decimal', { precision: 10, scale: 2 })
+  value: number;
+
   @Column()
   paycheck_id: string;
 

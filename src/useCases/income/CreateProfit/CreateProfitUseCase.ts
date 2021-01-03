@@ -92,7 +92,11 @@ export class CreateProfitUseCase {
       current_received: sumPaycheckCurrentReceived,
     });
 
-    const profit = await this.profitRepository.create(note, paycheck_id);
+    const profit = await this.profitRepository.create({
+      note,
+      value: current_received,
+      paycheck_id,
+    });
 
     return {
       wallet: updateWallet,

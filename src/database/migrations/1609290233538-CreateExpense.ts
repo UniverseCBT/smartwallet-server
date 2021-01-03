@@ -26,6 +26,10 @@ export class CreateExpense1609290233538 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'value',
+            type: 'decimal',
+          },
+          {
             name: 'habit_id',
             type: 'uuid',
             isNullable: true,

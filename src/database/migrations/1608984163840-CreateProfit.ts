@@ -26,6 +26,10 @@ export default class CreateProfit1608984163840 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'value',
+            type: 'decimal',
+          },
+          {
             name: 'paycheck_id',
             type: 'uuid',
             isNullable: true,

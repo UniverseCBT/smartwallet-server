@@ -1,5 +1,6 @@
 import { Expense } from '../../entities/Expense';
+import { ICreateExpenseDTO } from '../../useCases/expense/CreateExpense/ICreateExpenseDTO';
 
 export interface IExpenseRepository {
-  create(note: string, habit_id: string): Promise<Expense>;
+  create(data: ICreateExpenseDTO): Promise<Expense>;
 }

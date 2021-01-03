@@ -18,6 +18,9 @@ export class Expense {
   @Column()
   notes: string;
 
+  @Column('decimal', { precision: 10, scale: 2 })
+  value: number;
+
   @Column()
   habit_id: string;
 
