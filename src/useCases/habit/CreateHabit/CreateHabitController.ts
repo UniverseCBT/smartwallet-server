@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 
 import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
+import { CategoryRepository } from '../../../repositories/category/database/CategoryRepository';
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
 import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
+
 import { CreateHabitUseCase } from './CreateHabitUseCase';
 
 class CreateHabitController {
@@ -17,11 +19,13 @@ class CreateHabitController {
     const { id } = request.user;
 
     const habitsRepository = new HabitsRepository();
+    const categoryRepository = new CategoryRepository();
     const incomeRepository = new IncomeRepository();
     const walletRepository = new WalletRepository();
 
     const createHabits = new CreateHabitUseCase(
       habitsRepository,
+      categoryRepository,
       incomeRepository,
       walletRepository,
     );

@@ -1,10 +1,13 @@
 import { Habit } from '../../../entities/Habit';
 
 import { IHabitsRepository } from '../../../repositories/habits/IHabitsRepository';
+import { ICategoryRepository } from '../../../repositories/category/ICategoryRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
 import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 
 import { AppError } from '../../../share/AppError';
+
+import { transformPercent } from '../../../util/transformPercent';
 
 interface Request {
   habit_name: string;
@@ -19,6 +22,8 @@ export class CreateHabitUseCase {
   constructor(
     private habitsRepository: IHabitsRepository,
 
+    private categoryRepository: ICategoryRepository,
+
     private incomeRepository: IIncomeRepository,
 
     private walletRepository: IWalletRepository,
@@ -32,28 +37,28 @@ export class CreateHabitUseCase {
     category_id,
     user_id,
   }: Request): Promise<Habit> {
-    const category = await this.habitsRepository.findByCategory(
-      user_id,
-      category_id,
-    );
+    const category = await this.categoryRepository.findById(category_id);
 
     if (!category) {
-      throw new AppError('User or Category does not exist');
+      throw new AppError(
+        'Category not exist ? contact an admin to this error. Thanks!',
+        406,
+      );
     }
 
     const income = await this.incomeRepository.findByUser(user_id);
 
     if (!income) {
-      throw new AppError('as well ? income not exist ? contact an admin', 500);
+      throw new AppError('as well ? income not exist ? contact an admin', 406);
     }
 
-    const findHabits = await this.habitsRepository.findByUser(user_id);
+    const habits = await this.habitsRepository.findByUser(user_id);
 
-    if (!findHabits) {
-      throw new AppError('No habit found', 404);
+    if (!habits) {
+      throw new AppError('Sorry we not found this habit', 404);
     }
 
-    const totalExpectedHabits = findHabits.reduce((acumulator, value) => {
+    const totalExpectedHabits = habits.reduce((acumulator, value) => {
       return acumulator + Number(value.expected_spent);
     }, 0);
 
@@ -69,7 +74,7 @@ export class CreateHabitUseCase {
     const wallet = await this.walletRepository.findByUser(user_id);
 
     if (!wallet) {
-      throw new AppError('as well ? wallet not exist ? contact an admin', 500);
+      throw new AppError('as well ? wallet not exist ? contact an admin', 406);
     }
 
     if (expected_spent === undefined || expected_spent === null) {
@@ -77,40 +82,37 @@ export class CreateHabitUseCase {
     }
 
     if (current_spent) {
-      const totalCurrentHabits = findHabits.reduce((acumulator, value) => {
+      const totalCurrentHabits = habits.reduce((acumulator, value) => {
         return acumulator + Number(value.current_spent);
       }, 0);
 
-      if (current_spent + totalCurrentHabits > Number(wallet.available_money)) {
+      if (current_spent + totalCurrentHabits > Number(income.current_money)) {
         throw new AppError(
           `Sorry but you dont't have enough money in your wallet. You reached 100% from you wallet.`,
         );
       }
 
-      const isBills = category.find(bills => {
-        return bills.category.category === 'Bills';
-      });
-
-      if (isBills) {
-        const getBillsTotal = category.reduce((acumulator, value) => {
+      if (category.category === 'Bills') {
+        const getBillsSpent = habits.reduce((acumulator, value) => {
           return acumulator + Number(value.current_spent);
         }, 0);
 
-        const percentBillsResult = Math.ceil(
-          (getBillsTotal * 100) / Number(wallet.available_money),
-        );
-        const percentActualResult = Math.ceil(
-          (current_spent * 100) / wallet.available_money,
+        const percentActualResult = transformPercent(
+          getBillsSpent + current_spent,
+          Number(wallet.available_money),
         );
 
-        if (percentBillsResult + percentActualResult > 98) {
+        if (percentActualResult >= 98) {
           throw new AppError('Bills cannot overtake 98% of the total budget');
         }
       }
 
       const availableMoney = Number(wallet.available_money);
 
-      const moneySpent = current_spent - availableMoney;
+      const moneySpent =
+        availableMoney > current_spent
+          ? availableMoney - current_spent
+          : current_spent - availableMoney;
 
       await this.walletRepository.updateWallet({
         ...wallet,
