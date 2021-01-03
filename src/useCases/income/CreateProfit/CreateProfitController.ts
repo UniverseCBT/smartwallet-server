@@ -24,14 +24,14 @@ class CreateProfitController {
       profitRepository,
     );
 
-    await profitUseCase.execute({
+    const profit = await profitUseCase.execute({
       user_id: id,
       paycheck_id,
       note,
       current_received,
     });
 
-    return response.status(200).json({ ok: true });
+    return response.status(200).json(profit);
   }
 }
 
