@@ -4,6 +4,7 @@ import { HabitsRepository } from '../../../repositories/habits/database/HabitsRe
 import { CategoryRepository } from '../../../repositories/category/database/CategoryRepository';
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
 import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
+import { ExpenseRepository } from '../../../repositories/expense/database/ExpenseRepository';
 
 import { CreateHabitUseCase } from './CreateHabitUseCase';
 
@@ -22,12 +23,14 @@ class CreateHabitController {
     const categoryRepository = new CategoryRepository();
     const incomeRepository = new IncomeRepository();
     const walletRepository = new WalletRepository();
+    const expenseRepository = new ExpenseRepository();
 
     const createHabits = new CreateHabitUseCase(
       habitsRepository,
       categoryRepository,
       incomeRepository,
       walletRepository,
+      expenseRepository,
     );
 
     const habit = await createHabits.execute({
