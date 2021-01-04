@@ -68,7 +68,8 @@ export class CreatePaycheckUseCase {
       throw new AppError('Error Income does not exist, contact an admin', 406);
     }
 
-    const sumExpectedMoney = expected_received + Number(income.expected_money);
+    const sumExpectedMoney =
+      expectedReceivedWeek + Number(income.expected_money);
 
     await this.incomeRepository.updateExpectedMoney({
       ...income,
