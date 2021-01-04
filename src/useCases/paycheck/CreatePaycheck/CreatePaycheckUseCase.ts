@@ -29,7 +29,7 @@ export class CreatePaycheckUseCase {
     current_received,
     received_date,
     user_id,
-  }: Request): Promise<Paycheck> {
+  }: Request): Promise<Paycheck | void> {
     const nameExist = await this.paycheckRepository.findByName(name, user_id);
 
     if (nameExist && nameExist.user_id === user_id) {
@@ -51,9 +51,12 @@ export class CreatePaycheckUseCase {
       );
     }
 
+    const expectedReceivedWeek =
+      received_date === 'weekly' ? expected_received * 4 : expected_received;
+
     const paycheck = await this.paycheckRepository.create({
       name,
-      expected_received,
+      expected_received: expectedReceivedWeek,
       current_received,
       received_date,
       user_id,

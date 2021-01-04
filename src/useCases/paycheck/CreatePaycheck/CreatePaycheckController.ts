@@ -8,7 +8,12 @@ import { IncomeRepository } from '../../../repositories/incomes/database/IncomeR
 
 class CreatePaycheckController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, expected_received, received_date } = request.body;
+    const {
+      name,
+      expected_received,
+      current_received,
+      received_date,
+    } = request.body;
     const { id } = request.user;
 
     const paycheckRepository = new PaycheckRepository();
@@ -24,6 +29,7 @@ class CreatePaycheckController {
     const paycheck = await createPaycheckUseCase.execute({
       name,
       expected_received,
+      current_received,
       received_date,
       user_id: id,
     });
