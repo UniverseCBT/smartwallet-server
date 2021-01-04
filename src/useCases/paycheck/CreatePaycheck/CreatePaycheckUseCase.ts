@@ -1,13 +1,15 @@
 import { Paycheck } from '../../../entities/Paycheck';
-import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 
+import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 
 import { AppError } from '../../../share/AppError';
 
 interface Request {
   name: string;
   expected_received: number;
+  current_received?: number;
   received_date: 'weekly' | 'monthly';
   user_id: string;
 }
@@ -17,11 +19,14 @@ export class CreatePaycheckUseCase {
     private paycheckRepository: IPaycheckRepository,
 
     private incomeRepository: IIncomeRepository,
+
+    private walletRepository: IWalletRepository,
   ) {}
 
   public async execute({
     name,
     expected_received,
+    current_received,
     received_date,
     user_id,
   }: Request): Promise<Paycheck> {
@@ -49,6 +54,7 @@ export class CreatePaycheckUseCase {
     const paycheck = await this.paycheckRepository.create({
       name,
       expected_received,
+      current_received,
       received_date,
       user_id,
     });
@@ -56,7 +62,7 @@ export class CreatePaycheckUseCase {
     const income = await this.incomeRepository.findByUser(user_id);
 
     if (!income) {
-      throw new AppError('Error Income does not exist, contact an admin', 500);
+      throw new AppError('Error Income does not exist, contact an admin', 406);
     }
 
     const sumExpectedMoney = expected_received + Number(income.expected_money);
