@@ -71,11 +71,6 @@ export class CreatePaycheckUseCase {
     const sumExpectedMoney =
       expectedReceivedWeek + Number(income.expected_money);
 
-    await this.incomeRepository.updateExpectedMoney({
-      ...income,
-      expected_money: sumExpectedMoney,
-    });
-
     const wallet = await this.walletRepository.findByUser(user_id);
 
     if (!wallet) {
@@ -87,6 +82,12 @@ export class CreatePaycheckUseCase {
 
     if (current_received) {
       const addProfitMoney = Number(wallet.available_money) + current_received;
+
+      await this.incomeRepository.updateExpectedMoney({
+        ...income,
+        expected_money: sumExpectedMoney,
+        current_money: addProfitMoney,
+      });
 
       await await this.walletRepository.updateWallet({
         ...wallet,
