@@ -76,6 +76,24 @@ export class CreatePaycheckUseCase {
       expected_money: sumExpectedMoney,
     });
 
+    const wallet = await this.walletRepository.findByUser(user_id);
+
+    if (!wallet) {
+      throw new AppError(
+        'As well wallet does not exist ? try contact an admin',
+        406,
+      );
+    }
+
+    if (current_received) {
+      const addProfitMoney = Number(wallet.available_money) + current_received;
+
+      await await this.walletRepository.updateWallet({
+        ...wallet,
+        available_money: addProfitMoney,
+      });
+    }
+
     return paycheck;
   }
 }
