@@ -46,7 +46,7 @@ export class CreateProfitUseCase {
     if (!wallet) {
       throw new AppError(
         `Please contact an admin to this error in your wallet`,
-        500,
+        406,
       );
     }
 
@@ -62,7 +62,7 @@ export class CreateProfitUseCase {
     if (!income) {
       throw new AppError(
         `Please contact an admin to this error in your income`,
-        500,
+        406,
       );
     }
 
@@ -81,6 +81,7 @@ export class CreateProfitUseCase {
     if (!paycheck) {
       throw new AppError(
         `Don't find this paycheck in your account, please create another paycheck or contact an admin.`,
+        406,
       );
     }
 
@@ -92,7 +93,11 @@ export class CreateProfitUseCase {
       current_received: sumPaycheckCurrentReceived,
     });
 
-    const profit = await this.profitRepository.create(note, paycheck_id);
+    const profit = await this.profitRepository.create({
+      note,
+      value: current_received,
+      paycheck_id,
+    });
 
     return {
       wallet: updateWallet,

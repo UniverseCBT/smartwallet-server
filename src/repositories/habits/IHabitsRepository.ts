@@ -13,4 +13,5 @@ export interface IHabitsRepository {
   findByUser(user_id: string): Promise<Habit[] | undefined>;
   delete(habit_id: string): Promise<DeleteResult>;
   findByHabit(habit_id: string): Promise<Habit | undefined>;
+  updateSpent(data: Habit): Promise<Habit>;
 }

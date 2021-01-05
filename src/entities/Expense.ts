@@ -8,10 +8,10 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { Paycheck } from './Paycheck';
+import { Habit } from './Habit';
 
-@Entity('profit')
-export class Profit {
+@Entity('expense')
+export class Expense {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,13 +22,13 @@ export class Profit {
   value: number;
 
   @Column()
-  paycheck_id: string;
+  habit_id: string;
 
-  @OneToOne(() => Paycheck, paycheck => paycheck, {
+  @OneToOne(() => Habit, habit => habit, {
     eager: true,
   })
-  @JoinColumn({ name: 'paycheck_id' })
-  paycheck: Paycheck;
+  @JoinColumn({ name: 'habit_id' })
+  habit: Habit;
 
   @CreateDateColumn()
   created_at: Date;

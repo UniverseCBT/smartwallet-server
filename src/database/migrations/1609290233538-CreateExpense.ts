@@ -5,13 +5,13 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class CreateProfit1608984163840 implements MigrationInterface {
+export class CreateExpense1609290233538 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
 
     await queryRunner.createTable(
       new Table({
-        name: 'profit',
+        name: 'expense',
         columns: [
           {
             name: 'id',
@@ -30,7 +30,7 @@ export default class CreateProfit1608984163840 implements MigrationInterface {
             type: 'decimal',
           },
           {
-            name: 'paycheck_id',
+            name: 'habit_id',
             type: 'uuid',
             isNullable: true,
           },
@@ -49,11 +49,11 @@ export default class CreateProfit1608984163840 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'profit',
+      'expense',
       new TableForeignKey({
-        name: 'PaycheckProfit',
-        columnNames: ['paycheck_id'],
-        referencedTableName: 'paychecks',
+        name: 'HabitExpense',
+        columnNames: ['habit_id'],
+        referencedTableName: 'habits',
         referencedColumnNames: ['id'],
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
@@ -62,6 +62,6 @@ export default class CreateProfit1608984163840 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('profit');
+    await queryRunner.dropTable('expense');
   }
 }

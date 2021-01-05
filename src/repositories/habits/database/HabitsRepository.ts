@@ -54,4 +54,10 @@ export class HabitsRepository implements IHabitsRepository {
 
     return habit;
   }
+
+  public async updateSpent(data: Habit): Promise<Habit> {
+    const habit = await this.ormRepository.save(data);
+
+    return habit;
+  }
 }

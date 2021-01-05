@@ -1,5 +1,6 @@
 import { Profit } from '../../entities/Profit';
+import { ICreateProfitDTO } from '../../useCases/income/CreateProfit/ICreateProfitDTO';
 
 export interface IProfitRepository {
-  create(note: string, paycheck_id: string): Promise<Profit>;
+  create(data: ICreateProfitDTO): Promise<Profit>;
 }
