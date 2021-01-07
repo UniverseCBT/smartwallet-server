@@ -11,12 +11,8 @@ interface Request {
 }
 
 interface Response {
-  category: {
-    percent: string;
-    name: string;
-    category_money: number;
-    money_added: number;
-  };
+  percent: number;
+  name: string;
 }
 
 export class FindAllCategoryPercentUseCase {
@@ -28,7 +24,7 @@ export class FindAllCategoryPercentUseCase {
     private incomeRepository: IIncomeRepository,
   ) {}
 
-  public async execute({ user_id }: Request): Promise<Response> {
+  public async execute({ user_id }: Request): Promise<Response[]> {
     const category = await this.categoryRepository.findAll();
 
     const income = await this.incomeRepository.findByUser(user_id);
@@ -42,23 +38,35 @@ export class FindAllCategoryPercentUseCase {
 
     const availableMoneyMonth = Number(income.current_money);
 
-    category.forEach(async categoryItem => {
+    const teste = category.map(async categoryItem => {
       const habit = await this.habitRepository.findByCategory(
         user_id,
         categoryItem.id,
       );
 
-      if (!habit) return;
+      const getTotalSpent = habit.reduce(
+        (acumulator, value) => {
+          const getCategoryPercent = transformPercent(
+            Number(value.current_spent),
+            availableMoneyMonth,
+          );
 
-      const getTotalSpent = habit.reduce((acumulator, value) => {
-        return acumulator + Number(value.current_spent);
-      }, 0);
+          const returnData = Object.assign(acumulator, {
+            percent: getCategoryPercent,
+            name: categoryItem.category,
+          });
 
-      const getPercent = transformPercent(getTotalSpent, availableMoneyMonth);
+          return returnData;
+        },
+        {
+          percent: 0,
+          name: '',
+        },
+      );
 
-      console.log(getPercent);
+      return getTotalSpent;
     });
 
-    // console.log(findCategoryByHabit);
+    console.log(teste);
   }
 }

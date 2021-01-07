@@ -20,9 +20,9 @@ class FindAllCategoryPercentController {
       incomeRepository,
     );
 
-    await findAllCategoryPercent.execute({ user_id });
+    const findCategory = await findAllCategoryPercent.execute({ user_id });
 
-    return response.status(200).json({ ok: true });
+    return response.status(200).json(findCategory);
   }
 }
 
