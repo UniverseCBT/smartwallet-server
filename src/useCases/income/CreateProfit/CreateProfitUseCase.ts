@@ -12,6 +12,7 @@ import { IProfitRepository } from '../../../repositories/profit/IProfitRepositor
 
 interface Request {
   user_id: string;
+  habit_id: string;
   paycheck_id: string;
   current_received: number;
   note: string;
@@ -37,6 +38,7 @@ export class CreateProfitUseCase {
 
   public async execute({
     user_id,
+    habit_id,
     paycheck_id,
     current_received,
     note,

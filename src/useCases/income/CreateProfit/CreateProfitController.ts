@@ -10,7 +10,7 @@ import { CreateProfitUseCase } from './CreateProfitUseCase';
 class CreateProfitController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { note, paycheck_id, current_received } = request.body;
+    const { note, paycheck_id, habit_id, current_received } = request.body;
 
     const walletRepository = new WalletRepository();
     const incomeRepository = new IncomeRepository();
@@ -26,6 +26,7 @@ class CreateProfitController {
 
     const profit = await profitUseCase.execute({
       user_id: id,
+      habit_id,
       paycheck_id,
       note,
       current_received,
