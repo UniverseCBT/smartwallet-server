@@ -128,6 +128,7 @@ export class CreateHabitUseCase {
       importance,
       expected_spent,
       current_spent,
+      available: current_spent,
       category_id,
       user_id,
     });

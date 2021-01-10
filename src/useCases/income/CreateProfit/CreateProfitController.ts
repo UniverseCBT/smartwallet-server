@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
 import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
+import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
 import { PaycheckRepository } from '../../../repositories/paycheck/database/PaycheckRepository';
 import { ProfitRepository } from '../../../repositories/profit/database/ProfitRepository';
 
@@ -14,12 +15,14 @@ class CreateProfitController {
 
     const walletRepository = new WalletRepository();
     const incomeRepository = new IncomeRepository();
+    const habitRepository = new HabitsRepository();
     const paycheckRepository = new PaycheckRepository();
     const profitRepository = new ProfitRepository();
 
     const profitUseCase = new CreateProfitUseCase(
       walletRepository,
       incomeRepository,
+      habitRepository,
       paycheckRepository,
       profitRepository,
     );

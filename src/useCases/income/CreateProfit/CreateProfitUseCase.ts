@@ -7,6 +7,7 @@ import { Profit } from '../../../entities/Profit';
 
 import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IHabitsRepository } from '../../../repositories/habits/IHabitsRepository';
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IProfitRepository } from '../../../repositories/profit/IProfitRepository';
 
@@ -30,6 +31,8 @@ export class CreateProfitUseCase {
     private walletRepository: IWalletRepository,
 
     private incomeRepository: IIncomeRepository,
+
+    private habitRepository: IHabitsRepository,
 
     private paycheckRepository: IPaycheckRepository,
 
@@ -68,6 +71,17 @@ export class CreateProfitUseCase {
       );
     }
 
+    const habit = await this.habitRepository.findByHabit(habit_id);
+
+    if (!habit) {
+      throw new AppError('Sorry but this habit does not exist. try another');
+    }
+
+    await this.habitRepository.updateSpent({
+      ...habit,
+      available: current_received,
+    });
+
     const sumIncomeCurrentMoney =
       current_received + Number(income.current_money);
 
@@ -98,6 +112,7 @@ export class CreateProfitUseCase {
     const profit = await this.profitRepository.create({
       note,
       value: current_received,
+      habit_id,
       paycheck_id,
     });
 
