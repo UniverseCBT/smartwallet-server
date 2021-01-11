@@ -15,6 +15,7 @@ interface Request {
   importance: number;
   expected_spent: number;
   current_spent?: number;
+  available?: number;
   category_id: string;
   user_id: string;
 }
@@ -37,6 +38,7 @@ export class CreateHabitUseCase {
     importance,
     expected_spent,
     current_spent,
+    available,
     category_id,
     user_id,
   }: Request): Promise<Habit> {
@@ -113,12 +115,18 @@ export class CreateHabitUseCase {
       });
     }
 
+    if (current_spent && available && current_spent > available) {
+      throw new AppError(
+        `You can't create a spent, you don't have enough money for that!`,
+      );
+    }
+
     const habit = await this.habitsRepository.create({
       habit_name,
       importance,
       expected_spent,
       current_spent,
-      available: current_spent,
+      available,
       category_id,
       user_id,
     });

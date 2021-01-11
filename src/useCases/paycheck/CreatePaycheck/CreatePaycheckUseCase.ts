@@ -1,6 +1,7 @@
 import { Paycheck } from '../../../entities/Paycheck';
 
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
+import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
 
 import { AppError } from '../../../share/AppError';
 
