@@ -12,14 +12,18 @@ interface Request {
 }
 
 export class CreatePaycheckUseCase {
-  constructor(private paycheckRepository: IPaycheckRepository) {}
+  constructor(
+    private paycheckRepository: IPaycheckRepository,
+
+    private incomeRepository: IIncomeRepository,
+  ) {}
 
   public async execute({
     name,
     expected_received,
     received_date,
     user_id,
-  }: Request): Promise<Paycheck | void> {
+  }: Request): Promise<Paycheck> {
     const nameExist = await this.paycheckRepository.findByName(name, user_id);
 
     if (nameExist && nameExist.user_id === user_id) {
@@ -49,6 +53,20 @@ export class CreatePaycheckUseCase {
       expected_received: expectedReceivedWeek,
       received_date,
       user_id,
+    });
+
+    const income = await this.incomeRepository.findByUser(user_id);
+
+    if (!income) {
+      throw new AppError('Error Income does not exist, contact an admin', 406);
+    }
+
+    const sumExpectedMoney =
+      expectedReceivedWeek + Number(income.expected_money);
+
+    await this.incomeRepository.updateExpectedMoney({
+      ...income,
+      expected_money: sumExpectedMoney,
     });
 
     return paycheck;

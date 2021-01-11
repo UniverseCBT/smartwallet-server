@@ -85,16 +85,6 @@ export class CreateHabitUseCase {
     }
 
     if (current_spent) {
-      const totalCurrentHabits = habits.reduce((acumulator, value) => {
-        return acumulator + Number(value.current_spent);
-      }, 0);
-
-      if (current_spent + totalCurrentHabits > Number(income.current_money)) {
-        throw new AppError(
-          `Sorry but you dont't have enough money in your wallet. You reached 100% from you wallet.`,
-        );
-      }
-
       if (category.category === 'Bills') {
         const getBillsSpent = habits.reduce((acumulator, value) => {
           return acumulator + Number(value.current_spent);
