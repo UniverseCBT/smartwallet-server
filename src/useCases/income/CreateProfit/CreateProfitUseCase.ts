@@ -7,6 +7,7 @@ import { Profit } from '../../../entities/Profit';
 
 import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IHabitsRepository } from '../../../repositories/habits/IHabitsRepository';
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IProfitRepository } from '../../../repositories/profit/IProfitRepository';
 
@@ -14,7 +15,7 @@ interface Request {
   user_id: string;
   habit_id: string;
   paycheck_id: string;
-  current_received: number;
+  available: number;
   note: string;
 }
 
@@ -31,6 +32,8 @@ export class CreateProfitUseCase {
 
     private incomeRepository: IIncomeRepository,
 
+    private habitRepository: IHabitsRepository,
+
     private paycheckRepository: IPaycheckRepository,
 
     private profitRepository: IProfitRepository,
@@ -40,7 +43,7 @@ export class CreateProfitUseCase {
     user_id,
     habit_id,
     paycheck_id,
-    current_received,
+    available,
     note,
   }: Request): Promise<Response> {
     const wallet = await this.walletRepository.findByUser(user_id);
@@ -52,7 +55,7 @@ export class CreateProfitUseCase {
       );
     }
 
-    const sumAvailableMoney = current_received + Number(wallet.available_money);
+    const sumAvailableMoney = available + Number(wallet.available_money);
 
     const updateWallet = await this.walletRepository.updateWallet({
       ...wallet,
@@ -68,8 +71,18 @@ export class CreateProfitUseCase {
       );
     }
 
-    const sumIncomeCurrentMoney =
-      current_received + Number(income.current_money);
+    const habit = await this.habitRepository.findByHabit(habit_id);
+
+    if (!habit) {
+      throw new AppError('Sorry but this habit does not exist. try another');
+    }
+
+    await this.habitRepository.updateSpent({
+      ...habit,
+      available,
+    });
+
+    const sumIncomeCurrentMoney = available + Number(income.current_money);
 
     const updateIncome = await this.incomeRepository.updateCurrentMoney({
       ...income,
@@ -88,7 +101,7 @@ export class CreateProfitUseCase {
     }
 
     const sumPaycheckCurrentReceived =
-      current_received + Number(paycheck.current_received);
+      available + Number(paycheck.current_received);
 
     const updatePaycheck = await this.paycheckRepository.update({
       ...paycheck,
@@ -97,7 +110,8 @@ export class CreateProfitUseCase {
 
     const profit = await this.profitRepository.create({
       note,
-      value: current_received,
+      value: available,
+      habit_id,
       paycheck_id,
     });
 
