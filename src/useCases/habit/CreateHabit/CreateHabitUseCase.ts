@@ -8,14 +8,10 @@ import { IExpenseRepository } from '../../../repositories/expense/IExpenseReposi
 
 import { AppError } from '../../../share/AppError';
 
-import { transformPercent } from '../../../util/transformPercent';
-
 interface Request {
   habit_name: string;
   importance: number;
   expected_spent: number;
-  current_spent?: number;
-  available?: number;
   category_id: string;
   user_id: string;
 }
@@ -37,8 +33,6 @@ export class CreateHabitUseCase {
     habit_name,
     importance,
     expected_spent,
-    current_spent,
-    available,
     category_id,
     user_id,
   }: Request): Promise<Habit> {
@@ -86,57 +80,13 @@ export class CreateHabitUseCase {
       throw new AppError(`Expected spent cannot be empty`);
     }
 
-    if (current_spent) {
-      if (category.category === 'Bills') {
-        const getBillsSpent = habits.reduce((acumulator, value) => {
-          return acumulator + Number(value.current_spent);
-        }, 0);
-
-        const percentActualResult = transformPercent(
-          getBillsSpent + current_spent,
-          Number(wallet.available_money),
-        );
-
-        if (percentActualResult >= 98) {
-          throw new AppError('Bills cannot overtake 98% of the total budget');
-        }
-      }
-
-      const availableMoney = Number(wallet.available_money);
-
-      const moneySpent =
-        availableMoney > current_spent
-          ? availableMoney - current_spent
-          : current_spent - availableMoney;
-
-      await this.walletRepository.updateWallet({
-        ...wallet,
-        available_money: moneySpent,
-      });
-    }
-
-    if (current_spent && available && current_spent > available) {
-      throw new AppError(
-        `You can't create a spent, you don't have enough money for that!`,
-      );
-    }
-
     const habit = await this.habitsRepository.create({
       habit_name,
       importance,
       expected_spent,
-      current_spent,
-      available,
       category_id,
       user_id,
     });
-
-    if (current_spent) {
-      await this.expenseRepository.create({
-        habit_id: habit.id,
-        value: current_spent,
-      });
-    }
 
     return habit;
   }
