@@ -8,29 +8,22 @@ import { transformPercent } from '../../../util/transformPercent';
 
 interface Request {
   user_id: string;
+  category_id: string;
 }
 
 interface Response {
-  category: {
-    percent: string;
-    name: string;
-    category_money: number;
-    money_added: number;
-  };
+  percent: string;
+  money: number;
 }
 
 export class FindAllCategoryPercentUseCase {
   constructor(
-    private categoryRepository: ICategoryRepository,
-
     private habitRepository: IHabitsRepository,
 
     private incomeRepository: IIncomeRepository,
   ) {}
 
-  public async execute({ user_id }: Request): Promise<Response> {
-    const category = await this.categoryRepository.findAll();
-
+  public async execute({ user_id, category_id }: Request): Promise<Response> {
     const income = await this.incomeRepository.findByUser(user_id);
 
     if (!income) {
@@ -40,25 +33,37 @@ export class FindAllCategoryPercentUseCase {
       );
     }
 
-    const availableMoneyMonth = Number(income.current_money);
+    const habit = await this.habitRepository.findByCategory(
+      user_id,
+      category_id,
+    );
 
-    category.forEach(async categoryItem => {
-      const habit = await this.habitRepository.findByCategory(
-        user_id,
-        categoryItem.id,
-      );
+    const habitData = habit.reduce(
+      (acumulator, habitValue) => {
+        const availableIncomeMoneyMonth = Number(income.current_money);
+        const habitAvailableMoney = Number(habitValue.available);
 
-      if (!habit) return;
+        Object.assign(acumulator, {
+          money: acumulator.money + habitAvailableMoney,
+        });
 
-      const getTotalSpent = habit.reduce((acumulator, value) => {
-        return acumulator + Number(value.current_spent);
-      }, 0);
+        const transformValueInPercent = transformPercent(
+          acumulator.money,
+          availableIncomeMoneyMonth,
+        );
 
-      const getPercent = transformPercent(getTotalSpent, availableMoneyMonth);
+        Object.assign(acumulator, {
+          percent: `${transformValueInPercent}%`,
+        });
 
-      console.log(getPercent);
-    });
+        return acumulator;
+      },
+      {
+        money: 0,
+        percent: '0%',
+      },
+    );
 
-    // console.log(findCategoryByHabit);
+    return habitData;
   }
 }

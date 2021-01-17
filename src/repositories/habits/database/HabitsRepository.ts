@@ -18,7 +18,7 @@ export class HabitsRepository implements IHabitsRepository {
   public async findByCategory(
     user_id: string,
     category_id: string,
-  ): Promise<Habit[] | undefined> {
+  ): Promise<Habit[]> {
     const habit = await this.ormRepository.find({
       where: {
         user_id,
