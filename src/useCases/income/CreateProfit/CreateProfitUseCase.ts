@@ -55,13 +55,6 @@ export class CreateProfitUseCase {
       );
     }
 
-    const sumAvailableMoney = available + Number(wallet.available_money);
-
-    const updateWallet = await this.walletRepository.updateWallet({
-      ...wallet,
-      available_money: sumAvailableMoney,
-    });
-
     const income = await this.incomeRepository.findByUser(user_id);
 
     if (!income) {
@@ -82,13 +75,6 @@ export class CreateProfitUseCase {
       available,
     });
 
-    const sumIncomeCurrentMoney = available + Number(income.current_money);
-
-    const updateIncome = await this.incomeRepository.updateCurrentMoney({
-      ...income,
-      current_money: sumIncomeCurrentMoney,
-    });
-
     const paycheck = await this.paycheckRepository.findByPaycheckId(
       paycheck_id,
     );
@@ -99,6 +85,20 @@ export class CreateProfitUseCase {
         406,
       );
     }
+
+    const sumAvailableMoney = available + Number(wallet.available_money);
+
+    const updateWallet = await this.walletRepository.updateWallet({
+      ...wallet,
+      available_money: sumAvailableMoney,
+    });
+
+    const sumIncomeCurrentMoney = available + Number(income.current_money);
+
+    const updateIncome = await this.incomeRepository.updateCurrentMoney({
+      ...income,
+      current_money: sumIncomeCurrentMoney,
+    });
 
     const sumPaycheckCurrentReceived =
       available + Number(paycheck.current_received);
