@@ -6,6 +6,6 @@ import FindAllCategoryPercentController from '../useCases/category/FindAllCatego
 const routes = Router();
 
 routes.get('/', FindCategoryController.index);
-routes.get('/dashboard', FindAllCategoryPercentController.index);
+routes.get('/dashboard/:category_id', FindAllCategoryPercentController.index);
 
 export default routes;
