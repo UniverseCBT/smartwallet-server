@@ -1,6 +1,6 @@
-import { ICategoryRepository } from '../../../repositories/category/ICategoryRepository';
 import { IHabitsRepository } from '../../../repositories/habits/IHabitsRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 
 import { AppError } from '../../../share/AppError';
 
@@ -21,6 +21,8 @@ export class FindAllCategoryPercentUseCase {
     private habitRepository: IHabitsRepository,
 
     private incomeRepository: IIncomeRepository,
+
+    private walletRepository: IWalletRepository,
   ) {}
 
   public async execute({ user_id, category_id }: Request): Promise<Response> {
@@ -33,6 +35,15 @@ export class FindAllCategoryPercentUseCase {
       );
     }
 
+    const wallet = await this.walletRepository.findByUser(user_id);
+
+    if (!wallet) {
+      throw new AppError(
+        'Sorry there was an error loading your wallet, contact an admin.',
+        500,
+      );
+    }
+
     const habit = await this.habitRepository.findByCategory(
       user_id,
       category_id,
@@ -40,7 +51,7 @@ export class FindAllCategoryPercentUseCase {
 
     const habitData = habit.reduce(
       (acumulator, habitValue) => {
-        const availableIncomeMoneyMonth = Number(income.current_money);
+        const availableWalletMoney = Number(wallet.available_money);
         const habitAvailableMoney = Number(habitValue.available);
 
         Object.assign(acumulator, {
@@ -49,7 +60,7 @@ export class FindAllCategoryPercentUseCase {
 
         const transformValueInPercent = transformPercent(
           acumulator.money,
-          availableIncomeMoneyMonth,
+          availableWalletMoney,
         );
 
         Object.assign(acumulator, {

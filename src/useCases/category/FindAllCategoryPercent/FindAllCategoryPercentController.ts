@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
+import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
 
 import { FindAllCategoryPercentUseCase } from './FindAllCategoryPercentUseCase';
 
@@ -12,10 +13,12 @@ class FindAllCategoryPercentController {
 
     const habitRepository = new HabitsRepository();
     const incomeRepository = new IncomeRepository();
+    const walletRepository = new WalletRepository();
 
     const findAllCategoryPercent = new FindAllCategoryPercentUseCase(
       habitRepository,
       incomeRepository,
+      walletRepository,
     );
 
     const findCategory = await findAllCategoryPercent.execute({
