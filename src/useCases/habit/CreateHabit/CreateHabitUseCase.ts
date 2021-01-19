@@ -61,9 +61,12 @@ export class CreateHabitUseCase {
       return acumulator + Number(value.expected_spent);
     }, 0);
 
+    const isInvestiment = category.category !== 'Investiment';
+
     if (
       totalExpectedHabits + Number(expected_spent) >
-      Number(income.expected_money)
+        Number(income.expected_money) &&
+      !isInvestiment
     ) {
       throw new AppError(
         `You can't exceed expected income in the month, create or update a paycheck to create a new habit expected`,
