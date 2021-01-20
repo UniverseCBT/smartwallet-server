@@ -52,16 +52,6 @@ export class CreateExpenseUseCase {
       throw new AppError('Please contact an admin, error in your wallet!', 406);
     }
 
-    const totalCurrentHabits = findHabitsByUser.reduce((acumulator, value) => {
-      return acumulator + Number(value.current_spent);
-    }, 0);
-
-    if (current_spent + totalCurrentHabits > Number(wallet.available_money)) {
-      throw new AppError(
-        `Sorry but you dont't have enough money in your wallet. You reached 100% from you wallet.`,
-      );
-    }
-
     const availableMoney = Number(wallet.available_money);
 
     const moneySpent =
