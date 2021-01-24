@@ -1,3 +1,1 @@
-export interface IWithdrawHabitSpent {
-  value: number;
-}
+export interface IWithdrawHabitSpentDTO {}
