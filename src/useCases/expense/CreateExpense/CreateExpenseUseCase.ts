@@ -52,23 +52,19 @@ export class CreateExpenseUseCase {
       throw new AppError('Please contact an admin, error in your wallet!', 406);
     }
 
-    const availableMoney = Number(wallet.available_money);
-
-    const moneySpent =
-      availableMoney > current_spent
-        ? availableMoney - current_spent
-        : current_spent - availableMoney;
-
-    await this.walletRepository.updateWallet({
-      ...wallet,
-      available_money: moneySpent,
-    });
-
     const availableHabit = Number(habit.available);
 
     if (current_spent > availableHabit) {
       throw new AppError(
         `Your available money to this habits it is not enough`,
+      );
+    }
+
+    const habitAvailableSpent = Number(findOneHabit.available);
+
+    if (current_spent > habitAvailableSpent) {
+      throw new AppError(
+        'Withdraw money from another habit or added more available money for this habit',
       );
     }
 
@@ -87,6 +83,17 @@ export class CreateExpenseUseCase {
       note,
       value: current_spent,
       habit_id,
+    });
+
+    const availableMoney = Number(wallet.available_money);
+    const moneySpent =
+      availableMoney > current_spent
+        ? availableMoney - current_spent
+        : current_spent - availableMoney;
+
+    await this.walletRepository.updateWallet({
+      ...wallet,
+      available_money: moneySpent,
     });
 
     return expense;

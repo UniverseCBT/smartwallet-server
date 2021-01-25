@@ -10,7 +10,6 @@ import { auth } from '../../../config/auth';
 interface Request {
   usernameOrEmail: string;
   password: string;
-  automatically: string;
 }
 
 interface Response {
@@ -28,7 +27,6 @@ export class CreateSessionUseCase {
   public async execute({
     usernameOrEmail,
     password,
-    automatically,
   }: Request): Promise<Response> {
     const user = await this.users.findByUsernameOrEmail(usernameOrEmail);
 
@@ -44,7 +42,7 @@ export class CreateSessionUseCase {
 
     const token = sign({}, auth.secret, {
       subject: user.id,
-      expiresIn: automatically || '1d',
+      expiresIn: '1d',
     });
 
     return {
