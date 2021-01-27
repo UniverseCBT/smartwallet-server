@@ -8,13 +8,10 @@ import { IExpenseRepository } from '../../../repositories/expense/IExpenseReposi
 
 import { AppError } from '../../../share/AppError';
 
-import { transformPercent } from '../../../util/transformPercent';
-
 interface Request {
   habit_name: string;
   importance: number;
   expected_spent: number;
-  current_spent?: number;
   category_id: string;
   user_id: string;
 }
@@ -36,7 +33,6 @@ export class CreateHabitUseCase {
     habit_name,
     importance,
     expected_spent,
-    current_spent,
     category_id,
     user_id,
   }: Request): Promise<Habit> {
@@ -65,9 +61,12 @@ export class CreateHabitUseCase {
       return acumulator + Number(value.expected_spent);
     }, 0);
 
+    const isInvestiment = category.category !== 'Investiment';
+
     if (
       totalExpectedHabits + Number(expected_spent) >
-      Number(income.expected_money)
+        Number(income.expected_money) &&
+      !isInvestiment
     ) {
       throw new AppError(
         `You can't exceed expected income in the month, create or update a paycheck to create a new habit expected`,
@@ -84,60 +83,13 @@ export class CreateHabitUseCase {
       throw new AppError(`Expected spent cannot be empty`);
     }
 
-    if (current_spent) {
-      const totalCurrentHabits = habits.reduce((acumulator, value) => {
-        return acumulator + Number(value.current_spent);
-      }, 0);
-
-      if (current_spent + totalCurrentHabits > Number(income.current_money)) {
-        throw new AppError(
-          `Sorry but you dont't have enough money in your wallet. You reached 100% from you wallet.`,
-        );
-      }
-
-      if (category.category === 'Bills') {
-        const getBillsSpent = habits.reduce((acumulator, value) => {
-          return acumulator + Number(value.current_spent);
-        }, 0);
-
-        const percentActualResult = transformPercent(
-          getBillsSpent + current_spent,
-          Number(wallet.available_money),
-        );
-
-        if (percentActualResult >= 98) {
-          throw new AppError('Bills cannot overtake 98% of the total budget');
-        }
-      }
-
-      const availableMoney = Number(wallet.available_money);
-
-      const moneySpent =
-        availableMoney > current_spent
-          ? availableMoney - current_spent
-          : current_spent - availableMoney;
-
-      await this.walletRepository.updateWallet({
-        ...wallet,
-        available_money: moneySpent,
-      });
-    }
-
     const habit = await this.habitsRepository.create({
       habit_name,
       importance,
       expected_spent,
-      current_spent,
       category_id,
       user_id,
     });
-
-    if (current_spent) {
-      await this.expenseRepository.create({
-        habit_id: habit.id,
-        value: current_spent,
-      });
-    }
 
     return habit;
   }

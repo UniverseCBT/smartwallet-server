@@ -40,6 +40,11 @@ export class CreateHabits1607303260363 implements MigrationInterface {
             default: 0,
           },
           {
+            name: 'available',
+            type: 'decimal',
+            default: 0,
+          },
+          {
             name: 'category_id',
             type: 'uuid',
           },

@@ -2,14 +2,12 @@ import { Paycheck } from '../../../entities/Paycheck';
 
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
-import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 
 import { AppError } from '../../../share/AppError';
 
 interface Request {
   name: string;
   expected_received: number;
-  current_received?: number;
   received_date: 'weekly' | 'monthly';
   user_id: string;
 }
@@ -19,17 +17,14 @@ export class CreatePaycheckUseCase {
     private paycheckRepository: IPaycheckRepository,
 
     private incomeRepository: IIncomeRepository,
-
-    private walletRepository: IWalletRepository,
   ) {}
 
   public async execute({
     name,
     expected_received,
-    current_received,
     received_date,
     user_id,
-  }: Request): Promise<Paycheck | void> {
+  }: Request): Promise<Paycheck> {
     const nameExist = await this.paycheckRepository.findByName(name, user_id);
 
     if (nameExist && nameExist.user_id === user_id) {
@@ -57,7 +52,6 @@ export class CreatePaycheckUseCase {
     const paycheck = await this.paycheckRepository.create({
       name,
       expected_received: expectedReceivedWeek,
-      current_received,
       received_date,
       user_id,
     });
@@ -75,24 +69,6 @@ export class CreatePaycheckUseCase {
       ...income,
       expected_money: sumExpectedMoney,
     });
-
-    const wallet = await this.walletRepository.findByUser(user_id);
-
-    if (!wallet) {
-      throw new AppError(
-        'As well wallet does not exist ? try contact an admin',
-        406,
-      );
-    }
-
-    if (current_received) {
-      const addProfitMoney = Number(wallet.available_money) + current_received;
-
-      await await this.walletRepository.updateWallet({
-        ...wallet,
-        available_money: addProfitMoney,
-      });
-    }
 
     return paycheck;
   }

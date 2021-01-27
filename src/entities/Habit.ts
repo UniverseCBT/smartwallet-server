@@ -29,6 +29,9 @@ export class Habit {
   @Column('decimal', { precision: 10, scale: 2 })
   current_spent: number;
 
+  @Column('decimal', { precision: 10, scale: 2 })
+  available: number;
+
   @Column()
   category_id: string;
 

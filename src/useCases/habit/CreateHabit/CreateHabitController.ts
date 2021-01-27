@@ -14,7 +14,6 @@ class CreateHabitController {
       habit_name,
       importance,
       expected_spent,
-      current_spent,
       category_id,
     } = request.body;
     const { id } = request.user;
@@ -37,7 +36,6 @@ class CreateHabitController {
       habit_name,
       importance,
       expected_spent,
-      current_spent,
       category_id,
       user_id: id,
     });

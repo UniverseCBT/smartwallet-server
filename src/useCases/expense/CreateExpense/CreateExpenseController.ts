@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { ExpenseRepository } from '../../../repositories/expense/database/ExpenseRepository';
 import { HabitsRepository } from '../../../repositories/habits/database/HabitsRepository';
 import { WalletRepository } from '../../../repositories/wallet/database/WalletRepository';
-import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
 
 import { CreateExpenseUseCase } from './CreateExpenseUseCase';
 
@@ -15,13 +14,11 @@ class CreateExpenseController {
     const expenseRepository = new ExpenseRepository();
     const habitRepository = new HabitsRepository();
     const walletRepository = new WalletRepository();
-    const incomeRepository = new IncomeRepository();
 
     const createExpenseUseCase = new CreateExpenseUseCase(
       expenseRepository,
       habitRepository,
       walletRepository,
-      incomeRepository,
     );
 
     const expense = await createExpenseUseCase.execute({
