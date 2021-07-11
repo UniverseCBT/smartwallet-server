@@ -1,4 +1,7 @@
 import { Request, Response } from 'express';
+import * as yup from 'yup';
+
+import { AppError } from '../../../share/AppError';
 
 import { UsersRepository } from '../../../repositories/users/database/UsersRepository';
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
@@ -7,9 +10,31 @@ import { Bcrypt } from '../../../providers/Hash/implementations/Bcrypt';
 
 import { CreateUserUseCase } from './CreateUserUseCase';
 
+const schema = yup.object().shape({
+  name: yup.string().min(2).required('This field is required.'),
+  username: yup.string().min(2).required('This field is required.'),
+  email: yup.string().email().required('This field is required.'),
+  password: yup.string().min(6).required(),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password'), null], `Passwords don't match`),
+});
+
 class CreateUserController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, username, email, password } = request.body;
+    const { name, username, email, password, confirmPassword } = request.body;
+
+    const valid = await schema.isValid({
+      name,
+      username,
+      email,
+      password,
+      confirmPassword,
+    });
+
+    if (!valid) {
+      throw new AppError('Vaidation Error');
+    }
 
     const userRepository = new UsersRepository();
     const incomesRepository = new IncomeRepository();
