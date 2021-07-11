@@ -38,13 +38,13 @@ export class CreateUserUseCase {
     const emailExist = await this.usersRepository.findByEmail(email);
 
     if (emailExist) {
-      throw new AppError('This email already exist');
+      throw new AppError('This email already exist', 'email');
     }
 
     const usernameExist = await this.usersRepository.findByUsername(username);
 
     if (usernameExist) {
-      throw new AppError('This username already exist');
+      throw new AppError('This username already exist', 'username');
     }
 
     const passwordHash = await this.hashProvider.hash(password);
