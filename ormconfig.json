@@ -1,15 +1,28 @@
-{
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "postgres",
-  "password": "smartwallet-postgres",
-  "database": "smartwallet",
-  "migrations": [
-    "./src/database/migrations/*.ts"
-  ],
-  "cli": {
-    "migrationsDir": "./src/database/migrations"
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "smartwallet-postgres",
+    "database": "smartwallet",
+    "migrations": [
+      "./src/database/migrations/*.ts"
+    ],
+    "cli": {
+      "migrationsDir": "./src/database/migrations"
+    },
+    "entities": ["./src/entities/*.ts"]
   },
-  "entities": ["./src/entities/*.ts"]
-}
+  {
+    "name": "mongo",
+    "type": "mongodb",
+    "host": "localhost",
+    "username": "localhost",
+    "password": "",
+    "port": 27017,
+    "database": "betterbudget",
+    "entities": ["./src/schemas/*.ts"]
+  }
+]
