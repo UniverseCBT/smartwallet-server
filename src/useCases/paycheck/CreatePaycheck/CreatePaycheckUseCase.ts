@@ -2,6 +2,7 @@ import { Paycheck } from '../../../entities/Paycheck';
 
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IHistoricRepository } from '../../../repositories/historic/IHistoricRepository';
 
 import { AppError } from '../../../share/AppError';
 
@@ -17,6 +18,8 @@ export class CreatePaycheckUseCase {
     private paycheckRepository: IPaycheckRepository,
 
     private incomeRepository: IIncomeRepository,
+
+    private historicRepository: IHistoricRepository,
   ) {}
 
   public async execute({
@@ -55,6 +58,13 @@ export class CreatePaycheckUseCase {
       expected_received: expectedReceivedWeek,
       received_date,
       user_id,
+    });
+
+    await this.historicRepository.create({
+      action: 'create',
+      entity_name: 'paycheck',
+      entity: paycheck,
+      user: user_id,
     });
 
     const income = await this.incomeRepository.findByUser(user_id);
