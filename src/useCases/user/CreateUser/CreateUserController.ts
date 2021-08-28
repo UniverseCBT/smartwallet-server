@@ -33,7 +33,7 @@ class CreateUserController {
     });
 
     if (!valid) {
-      throw new AppError('Vaidation Error');
+      throw new AppError('Validation Error');
     }
 
     const userRepository = new UsersRepository();
