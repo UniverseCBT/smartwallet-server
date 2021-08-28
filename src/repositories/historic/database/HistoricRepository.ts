@@ -20,15 +20,11 @@ export class HistoricRepository implements IHistoricRepository {
   }
 
   public async findAllByUser(user_id: string): Promise<Historic[]> {
-    const historicResponse = await this.ormRepository
-      .createCursor(
-        this.ormRepository.find({
-          where: {
-            user: { $eq: user_id },
-          },
-        }),
-      )
-      .toArray();
+    const historicResponse = await this.ormRepository.find({
+      where: {
+        user: { $eq: user_id },
+      },
+    });
 
     return historicResponse;
   }

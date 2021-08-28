@@ -1,6 +1,6 @@
-import { AppError } from '../../../share/AppError';
+// import { AppError } from '../../../share/AppError';
 
-import { HistoricRepository } from '../../../repositories/historic/database/HistoricRepository';
+import { IHistoricRepository } from '../../../repositories/historic/IHistoricRepository';
 import { Historic } from '../../../schemas/Historic';
 
 interface Request {
@@ -8,14 +8,10 @@ interface Request {
 }
 
 export class FindByUserUseCase {
-  constructor(private historicRepository: HistoricRepository) {}
+  constructor(private historicRepository: IHistoricRepository) {}
 
-  public async execute({ user_id }: Request): Promise<Historic[] | undefined> {
+  public async execute({ user_id }: Request): Promise<Historic[]> {
     const historic = await this.historicRepository.findAllByUser(user_id);
-
-    if (!historic) {
-      throw new AppError('Something went wrong', 'historic', 500);
-    }
 
     return historic;
   }
