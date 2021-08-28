@@ -1,3 +1,4 @@
+import { Habit } from '../../../entities/Habit';
 import { IHabitsRepository } from '../../../repositories/habits/IHabitsRepository';
 
 interface Request {

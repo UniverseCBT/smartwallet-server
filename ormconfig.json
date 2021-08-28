@@ -5,8 +5,8 @@
     "host": "localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "smartwallet-postgres",
-    "database": "smartwallet",
+    "password": "betterbudget",
+    "database": "betterbudget",
     "migrations": [
       "./src/database/migrations/*.ts"
     ],
@@ -23,6 +23,7 @@
     "password": "",
     "port": 27017,
     "database": "betterbudget",
+    "useUnifiedTopology": true,
     "entities": ["./src/schemas/*.ts"]
   }
 ]
