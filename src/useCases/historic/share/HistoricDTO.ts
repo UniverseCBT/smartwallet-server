@@ -5,7 +5,7 @@ import { Profit } from '../../../entities/Profit';
 import { Wallet } from '../../../entities/Wallet';
 
 export interface HistoricDTO {
-  action: string;
+  action: 'created' | 'deleted' | 'updated';
   entity_name: string;
   user: string;
   entity: Expense | Income | Paycheck | Profit | Wallet;

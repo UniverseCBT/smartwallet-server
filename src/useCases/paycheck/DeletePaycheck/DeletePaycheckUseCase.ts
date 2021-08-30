@@ -2,6 +2,7 @@ import { AppError } from '../../../share/AppError';
 
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IHistoricRepository } from '../../../repositories/historic/IHistoricRepository';
 
 interface Request {
   paycheck_id: string;
@@ -13,6 +14,8 @@ export class DeletePaycheckUseCase {
     private paycheckRepository: IPaycheckRepository,
 
     private incomeRepository: IIncomeRepository,
+
+    private historicRepository: IHistoricRepository,
   ) {}
 
   public async execute({ paycheck_id, user_id }: Request): Promise<void> {
@@ -44,6 +47,13 @@ export class DeletePaycheckUseCase {
     await this.incomeRepository.updateExpectedMoney({
       ...income,
       expected_money: deleteIncome,
+    });
+
+    await this.historicRepository.create({
+      action: 'deleted',
+      entity_name: 'paycheck',
+      entity: paycheck,
+      user: user_id,
     });
 
     await this.paycheckRepository.delete(paycheck_id);

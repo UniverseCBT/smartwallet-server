@@ -31,12 +31,16 @@ export class HistoricRepository implements IHistoricRepository {
 
   public async findAllByUserDate(
     user_id: string,
-    date: string,
+    startMonth: Date,
+    endMonth: Date,
   ): Promise<Historic[]> {
     const historicUser = await this.ormRepository.find({
       where: {
-        'user.id': { $eq: user_id },
-        'user.created_at': { $eq: date },
+        user: { $eq: user_id },
+        created_at: { $gte: startMonth, $lte: endMonth },
+      },
+      order: {
+        created_at: 'DESC',
       },
     });
 

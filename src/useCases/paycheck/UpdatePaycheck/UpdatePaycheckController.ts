@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { PaycheckRepository } from '../../../repositories/paycheck/database/PaycheckRepository';
 import { IncomeRepository } from '../../../repositories/incomes/database/IncomeRepository';
+import { HistoricRepository } from '../../../repositories/historic/database/HistoricRepository';
 
 import { UpdatePaycheckUseCase } from './UpdatePaycheckUseCase';
 
@@ -13,10 +14,12 @@ class UpdatePaycheckController {
 
     const paycheckRepository = new PaycheckRepository();
     const incomeRepository = new IncomeRepository();
+    const historicRepository = new HistoricRepository();
 
     const updatePaycheck = new UpdatePaycheckUseCase(
       paycheckRepository,
       incomeRepository,
+      historicRepository,
     );
 
     const paycheck = await updatePaycheck.execute({
