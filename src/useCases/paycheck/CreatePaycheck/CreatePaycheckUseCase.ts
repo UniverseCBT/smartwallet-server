@@ -45,8 +45,8 @@ export class CreatePaycheckUseCase {
     if (!(received_date === 'weekly' || received_date === 'monthly')) {
       throw new AppError(
         `You can't create received date with ${received_date}`,
-        'received_date',
         403,
+        'received_date',
       );
     }
 
@@ -61,7 +61,7 @@ export class CreatePaycheckUseCase {
     });
 
     await this.historicRepository.create({
-      action: 'create',
+      action: 'created',
       entity_name: 'paycheck',
       entity: paycheck,
       user: user_id,
@@ -72,8 +72,8 @@ export class CreatePaycheckUseCase {
     if (!income) {
       throw new AppError(
         'Error Income does not exist, contact an admin',
-        'income',
         406,
+        'income',
       );
     }
 

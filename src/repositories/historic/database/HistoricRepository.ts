@@ -39,6 +39,9 @@ export class HistoricRepository implements IHistoricRepository {
         user: { $eq: user_id },
         created_at: { $gte: startMonth, $lte: endMonth },
       },
+      order: {
+        created_at: 'DESC',
+      },
     });
 
     return historicUser;

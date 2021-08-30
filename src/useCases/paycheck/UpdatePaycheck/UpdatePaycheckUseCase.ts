@@ -2,6 +2,7 @@ import { AppError } from '../../../share/AppError';
 
 import { IPaycheckRepository } from '../../../repositories/paycheck/IPaycheckRepository';
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
+import { IHistoricRepository } from '../../../repositories/historic/IHistoricRepository';
 
 interface Request {
   paycheck_id: string;
@@ -19,6 +20,8 @@ export class UpdatePaycheckUseCase {
     private paycheckRepository: IPaycheckRepository,
 
     private incomeRepository: IIncomeRepository,
+
+    private historicRepository: IHistoricRepository,
   ) {}
 
   public async execute({
@@ -65,10 +68,17 @@ export class UpdatePaycheckUseCase {
 
     const containName = name || paycheck.name;
 
-    await this.paycheckRepository.update({
+    const updatedPaycheck = await this.paycheckRepository.update({
       ...paycheck,
       name: containName,
       expected_received: newWallet || expectedPaycheckReceived,
+    });
+
+    await this.historicRepository.create({
+      action: 'updated',
+      entity_name: 'paycheck',
+      entity: updatedPaycheck,
+      user: user_id,
     });
 
     return {
