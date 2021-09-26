@@ -5,6 +5,7 @@ import sessionRouter from './session.routes';
 
 import Authentication from '../middlewares/Authentication';
 
+import registerStepRouter from './register-step.routes';
 import paycheckRouter from './paycheck.routes';
 import categoryRouter from './category.routes';
 import habitRouter from './habit.routes';
@@ -19,6 +20,7 @@ routes.use('/users', usersRouter);
 
 routes.use(Authentication);
 
+routes.use('/sessions', registerStepRouter);
 routes.use('/paychecks', paycheckRouter);
 routes.use('/categories', categoryRouter);
 routes.use('/habits', habitRouter);

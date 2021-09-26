@@ -2,6 +2,7 @@ import { getMongoRepository, MongoRepository } from 'typeorm';
 
 import { Historic } from '../../../schemas/Historic';
 import { HistoricDTO } from '../../../useCases/historic/share/HistoricDTO';
+import { ICheckUserStepDTO } from '../../../useCases/user/CheckUserStep/CheckUserStepDTO';
 import { IHistoricRepository } from '../IHistoricRepository';
 
 export class HistoricRepository implements IHistoricRepository {
@@ -45,5 +46,20 @@ export class HistoricRepository implements IHistoricRepository {
     });
 
     return historicUser;
+  }
+
+  public async findFirstByUserAction({
+    user_id,
+    entity,
+  }: ICheckUserStepDTO): Promise<Historic | undefined> {
+    const historic = await this.ormRepository.findOne({
+      where: {
+        user: { $eq: user_id },
+        entity_name: { $eq: entity },
+        action: { $eq: 'created' },
+      },
+    });
+
+    return historic;
   }
 }
