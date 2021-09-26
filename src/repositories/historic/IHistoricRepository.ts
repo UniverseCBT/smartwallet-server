@@ -1,5 +1,6 @@
 import { Historic } from '../../schemas/Historic';
 import { HistoricDTO } from '../../useCases/historic/share/HistoricDTO';
+import { ICheckUserStepDTO } from '../../useCases/user/CheckUserStep/CheckUserStepDTO';
 
 export interface IHistoricRepository {
   create(historic: HistoricDTO): Promise<Historic>;
@@ -9,4 +10,7 @@ export interface IHistoricRepository {
     startMonth: Date,
     endMonth: Date,
   ): Promise<Historic[]>;
+  findFirstByUserAction(
+    request: ICheckUserStepDTO,
+  ): Promise<Historic | undefined>;
 }

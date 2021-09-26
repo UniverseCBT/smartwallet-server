@@ -10,12 +10,8 @@ import { CreateHabitUseCase } from './CreateHabitUseCase';
 
 class CreateHabitController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      habit_name,
-      importance,
-      expected_spent,
-      category_id,
-    } = request.body;
+    const { habit_name, importance, expected_spent, category_id } =
+      request.body;
     const { id } = request.user;
 
     const habitsRepository = new HabitsRepository();
