@@ -2,7 +2,7 @@
   {
     "name": "default",
     "type": "postgres",
-    "host": "localhost",
+    "host": "postgres",
     "port": 5432,
     "username": "postgres",
     "password": "betterbudget",
@@ -18,7 +18,7 @@
   {
     "name": "mongo",
     "type": "mongodb",
-    "host": "localhost",
+    "host": "mongo",
     "username": "localhost",
     "password": "",
     "port": 27017,
