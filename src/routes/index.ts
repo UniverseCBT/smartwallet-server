@@ -18,6 +18,8 @@ const routes = Router();
 routes.use('/sessions', sessionRouter);
 routes.use('/users', usersRouter);
 
+// [] - Create Middleware to verify user exist in authentication middleware
+
 routes.use(Authentication);
 
 routes.use('/sessions', registerStepRouter);

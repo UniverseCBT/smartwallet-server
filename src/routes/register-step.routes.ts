@@ -4,6 +4,6 @@ import CheckUserStepController from '../useCases/user/CheckUserStep/CheckUserSte
 
 const routes = Router();
 
-routes.get('/:page', CheckUserStepController.index);
+routes.get('/', CheckUserStepController.index);
 
 export default routes;

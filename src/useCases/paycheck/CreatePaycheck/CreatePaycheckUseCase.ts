@@ -62,7 +62,7 @@ export class CreatePaycheckUseCase {
 
     await this.historicRepository.create({
       action: 'created',
-      entity_name: 'paycheck',
+      entity_name: 'income',
       entity: paycheck,
       user: user_id,
     });

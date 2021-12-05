@@ -42,7 +42,7 @@ export class CreateSessionUseCase {
 
     const token = sign({}, auth.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: '360d',
     });
 
     return {
