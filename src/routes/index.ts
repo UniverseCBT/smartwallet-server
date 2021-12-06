@@ -12,13 +12,12 @@ import habitRouter from './habit.routes';
 import profitRouter from './profit.routes';
 import expenseRouter from './expense.routes';
 import historicRouter from './historic.routes';
+import overviewRouter from './overview.routes';
 
 const routes = Router();
 
 routes.use('/sessions', sessionRouter);
 routes.use('/users', usersRouter);
-
-// [] - Create Middleware to verify user exist in authentication middleware
 
 routes.use(Authentication);
 
@@ -29,5 +28,6 @@ routes.use('/habits', habitRouter);
 routes.use('/profit', profitRouter);
 routes.use('/expense', expenseRouter);
 routes.use('/historic', historicRouter);
+routes.use('/overview', overviewRouter);
 
 export default routes;
