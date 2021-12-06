@@ -5,6 +5,7 @@ import { ICategoryRepository } from '../../../repositories/category/ICategoryRep
 import { IIncomeRepository } from '../../../repositories/incomes/IIncomesRepository';
 import { IWalletRepository } from '../../../repositories/wallet/IWalletRepository';
 import { IExpenseRepository } from '../../../repositories/expense/IExpenseRepository';
+import { IHistoricRepository } from '../../../repositories/historic/IHistoricRepository';
 
 import { AppError } from '../../../share/AppError';
 
@@ -27,6 +28,8 @@ export class CreateHabitUseCase {
     private walletRepository: IWalletRepository,
 
     private expenseRepository: IExpenseRepository,
+
+    private historicRepository: IHistoricRepository,
   ) {}
 
   public async execute({
@@ -89,6 +92,13 @@ export class CreateHabitUseCase {
       expected_spent,
       category_id,
       user_id,
+    });
+
+    await this.historicRepository.create({
+      entity: habit,
+      action: 'created',
+      entity_name: 'habit',
+      user: user_id,
     });
 
     return habit;

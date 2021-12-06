@@ -62,4 +62,21 @@ export class HistoricRepository implements IHistoricRepository {
 
     return historic;
   }
+
+  public async findByEntityName(
+    user_id: string,
+    entity_name: string,
+  ): Promise<Historic[]> {
+    const historic = await this.ormRepository.find({
+      where: {
+        user: { $eq: user_id },
+        entity_name: { $eq: entity_name },
+      },
+      order: {
+        created_at: 'DESC',
+      },
+    });
+
+    return historic;
+  }
 }

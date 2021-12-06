@@ -13,4 +13,5 @@ export interface IHistoricRepository {
   findFirstByUserAction(
     request: ICheckUserStepDTO,
   ): Promise<Historic | undefined>;
+  findByEntityName(entity: string, user_id: string): Promise<Historic[]>;
 }
