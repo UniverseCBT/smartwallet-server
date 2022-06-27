@@ -4,6 +4,6 @@ import CreateOverviewController from '../useCases/overview/CreateOverview/Create
 
 const routes = Router();
 
-routes.post('', CreateOverviewController.create);
+routes.get('', CreateOverviewController.create);
 
 export default routes;
